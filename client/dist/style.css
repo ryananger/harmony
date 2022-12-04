@@ -39,7 +39,7 @@ h1 {
   justify-content: space-between;
 }
 
-#app, .canvas {
+#app {
   background-color: rgb(187, 206, 136);
 
   display: flex;
@@ -48,11 +48,14 @@ h1 {
 }
 
 .canvas {
+  background-color: rgb(187, 206, 136);
+
   border-width: 1px;
   border-style: solid;
   border-color: black;
 
+  box-sizing: content-box;
+
   margin: 32px;
   flex-grow: 1 1 auto;
-  height: 100%;
 }

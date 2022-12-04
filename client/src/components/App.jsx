@@ -24,6 +24,7 @@ var App = function(props) {
     <div id="main">
       <div className="header flex h">
         {`View: ${state.view} ........ # of Entities: ${state.entities.length}`}
+        {/* <img src='../../public/bulbasprite.png'/> */}
         <div id="devButtons">
           <button id="logState"    onClick={logState}>   Log state.</button>
           <button id="logEntities" onClick={logEntities}>Log entities.</button>
