@@ -28,27 +28,20 @@ var Canvas = function(props) {
   //   canvas.height = canvas.offsetHeight;
   // };
 
-  // mount canvas, setState, and create initial Entity
-  useEffect(function() {
+  var mountCanvas = function() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-
-    var entity = Entity(200, 200);
-    var bulba = '../../public/bulbasprite.png';
-    entity.methods.newImage(bulba, true, 36);
 
     setState({
       ...state,
       canvas: canvas,
-      ctx: ctx,
-      entities: function() {
-        state.entities.unshift(entity);
-        return state.entities;
-      }()
+      ctx: ctx
     })
 
-    setInterval(draw, 1, ctx, canvas);
-  }, [state.entities])
+    setInterval(draw, 20, ctx, canvas);
+  };
+
+  useEffect(mountCanvas, []);
 
   return (
     <canvas ref={canvasRef} className='canvas' width='1280' height='720'>
