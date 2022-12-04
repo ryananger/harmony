@@ -3,7 +3,7 @@ html {
   zoom: 1;
 }
 
-body, #root {
+body, #root, #main {
   font-family: 'Roboto', sans-serif, arial;
 
   display: flex;
