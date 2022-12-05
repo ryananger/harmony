@@ -4,24 +4,34 @@ import Entity from './Entity.js';
 
 var Dev = function(props) {
   var spawnEntity = function() {
-    var x = Math.floor(Math.random() * props.state.canvas.width);
-    var y = Math.floor(Math.random() * props.state.canvas.height);
+    var x = Math.floor(Math.random() * 1280);
+    var y = Math.floor(Math.random() * 720);
 
-    var entity = Entity(x, y);
-    var img = '../../public/bulbasprite.png';
-    entity.methods.newImage(img, true, 72);
+    var bulbasaur = Entity(x, y);
+    var src = '../../public/bulbasprite.png';
+    var sprite = bulbasaur.methods.newImage(src, true, 72);
+
+    sprite.animations = {
+      walkDown:  {start: 0},
+      walkLeft:  {start: 3},
+      walkUp:    {start: 6},
+      walkRight: {start: 9}
+    };
+
+    sprite.sheetLength = 3;
+    sprite.frameDuration = 8;
+    sprite.currentAnimation = 'walkDown';
 
     props.setState({
       ...props.state,
       entities: function() {
-        props.state.entities.unshift(entity);
+        props.state.entities.unshift(bulbasaur);
         return props.state.entities;
       }()
     })
   };
 
   var clearEntities = function() {
-    props.state.ctx.clearRect(0, 0, 1280, 720);
     props.setState({
       ...props.state,
       entities: []

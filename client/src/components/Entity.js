@@ -2,7 +2,7 @@ var idCount = 0;
 
 var Entity = function(x, y, methods) {
   const entity = {
-    id: idCount + 1,
+    id: idCount++,
     x: x,
     y: y,
     images: [],
@@ -16,6 +16,11 @@ var Entity = function(x, y, methods) {
       var image = {
         element: new Image(),
         animated: isAnimated,
+        animations: {},
+        currentAnimation: null,
+        frameDuration: 1,
+        frame: 0,
+        sheetLength: 1,
         width: width || null,
         height: height || width || null,
         x: x,
@@ -25,6 +30,7 @@ var Entity = function(x, y, methods) {
       image.element.src = src;
 
       entity.images.push(image);
+      return image;
     }
   }
 

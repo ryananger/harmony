@@ -1,5 +1,5 @@
 import React from 'react';
-import {useEffect, useRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 
 import Entity from './Entity.js';
@@ -7,44 +7,48 @@ import Entity from './Entity.js';
 var tick = 0;
 
 var Canvas = function(props) {
-  const canvasRef = useRef(null);
-
-  var draw = function(state, ctx, tick) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    state.entities.map(function(ent) {
-      var img = ent.images[ent.currentImage];
-      var sq = img.width;
-
-      ctx.drawImage(img.element, 0, 0, sq, sq, ent.x, ent.y, sq, sq);
-    })
-  };
+  const [mounted, setMounted] = useState(false);
+  var timeout;
 
   var mountCanvas = function() {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    setMounted(true);
+  };
 
-    let animationFrameId;
+  var renderCanvas = function() {
+    const ctx = props.canvasRef.current.getContext('2d');
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    var fps = 1;
+    var animId;
 
     var render = function() {
+      clearTimeout(timeout);
       tick++;
-      draw(props.state, ctx, tick);
-      animationFrameId = window.requestAnimationFrame(render);
+      props.draw(ctx, tick);
+
+      // timeout = setTimeout(function() {
+      //   window.requestAnimationFrame(render);
+      // }, 1000/fps);
+
+      var animId = window.requestAnimationFrame(render);
     };
 
     render();
 
-    props.setState({
-      ...props.state,
-      canvas: canvas,
-      ctx: ctx
-    });
+    return function() {
+      window.cancelAnimationFrame(animId);
+    };
   };
 
-  useEffect(mountCanvas, [props.state.entities]);
+  useEffect(mountCanvas, []);
+  useEffect(renderCanvas, [props.draw]);
+
+  useEffect(function() {
+    console.log('in useEffect: ', props.state.entities.length);
+  }, [props.state.entities.length])
 
   return (
-    <canvas ref={canvasRef} className='canvas' width='1280' height='720' />
+    <canvas ref={props.canvasRef} className='canvas' width='1280' height='720' />
   )
 };
 
