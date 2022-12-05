@@ -1,10 +1,9 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
-import axios from 'axios';
+import {useState} from 'react';
 
 import Canvas from './Canvas.jsx';
 import Entity from './Entity.js';
-import Dev from './Dev.jsx';
+import Dev from './DevBar.jsx';
 
 var App = function(props) {
   const [state, setState] = useState({
@@ -16,8 +15,8 @@ var App = function(props) {
 
   return (
     <div id="main">
-      <Dev state={[state, setState]} />
-      <Canvas state={[state, setState]} />
+      <Dev    state={state} setState={setState} />
+      <Canvas state={state} setState={setState} />
     </div>
   )
 }

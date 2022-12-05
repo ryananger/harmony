@@ -1,17 +1,16 @@
 import React from 'react';
-import {useState, useEffect, useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import axios from 'axios';
 
 import Entity from './Entity.js';
 
+var tick = 0;
+
 var Canvas = function(props) {
-  const [state, setState] = props.state;
   const canvasRef = useRef(null);
 
-  var draw = function(ctx, canvas) {
-    // fitToContainer(canvas);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  var draw = function(state, ctx, tick) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     state.entities.map(function(ent) {
       var img = ent.images[ent.currentImage];
@@ -21,32 +20,31 @@ var Canvas = function(props) {
     })
   };
 
-  // var fitToContainer = function (canvas) {
-  //   canvas.style.width = '100%';
-  //   canvas.style.height = '100%';
-  //   canvas.width  = canvas.offsetWidth;
-  //   canvas.height = canvas.offsetHeight;
-  // };
-
   var mountCanvas = function() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    setState({
-      ...state,
+    let animationFrameId;
+
+    var render = function() {
+      tick++;
+      draw(props.state, ctx, tick);
+      animationFrameId = window.requestAnimationFrame(render);
+    };
+
+    render();
+
+    props.setState({
+      ...props.state,
       canvas: canvas,
       ctx: ctx
-    })
-
-    setInterval(draw, 20, ctx, canvas);
+    });
   };
 
-  useEffect(mountCanvas, []);
+  useEffect(mountCanvas, [props.state.entities]);
 
   return (
-    <canvas ref={canvasRef} className='canvas' width='1280' height='720'>
-
-    </canvas>
+    <canvas ref={canvasRef} className='canvas' width='1280' height='720' />
   )
 };
 
