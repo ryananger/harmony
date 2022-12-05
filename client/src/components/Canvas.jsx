@@ -5,20 +5,13 @@ import axios from 'axios';
 import Entity from './Entity.js';
 
 var tick = 0;
-
+var timeout;
 var Canvas = function(props) {
-  const [mounted, setMounted] = useState(false);
-  var timeout;
-
-  var mountCanvas = function() {
-    setMounted(true);
-  };
-
   var renderCanvas = function() {
     const ctx = props.canvasRef.current.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    var fps = 1;
+    var fps = 8;
     var animId;
 
     var render = function() {
@@ -26,11 +19,13 @@ var Canvas = function(props) {
       tick++;
       props.draw(ctx, tick);
 
-      // timeout = setTimeout(function() {
-      //   window.requestAnimationFrame(render);
-      // }, 1000/fps);
+      props.state.entities.map(function(ent) {
+        ent.methods.walk();
+      })
 
-      var animId = window.requestAnimationFrame(render);
+      timeout = setTimeout(function() {
+        animId = window.requestAnimationFrame(render);
+      }, 1000/fps);
     };
 
     render();
@@ -40,7 +35,6 @@ var Canvas = function(props) {
     };
   };
 
-  useEffect(mountCanvas, []);
   useEffect(renderCanvas, [props.draw]);
 
   useEffect(function() {

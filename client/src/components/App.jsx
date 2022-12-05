@@ -15,9 +15,9 @@ var App = function(props) {
   const canvasRef = useRef(null);
 
   var draw = function(ctx, tick) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    //console.log('in draw: ', state.entities.length, tick);
 
-    console.log('in draw: ', state.entities.length, tick);
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     state.entities.forEach(function(ent) {
       var img = ent.images[ent.currentImage];
@@ -43,9 +43,8 @@ var App = function(props) {
 
   return (
     <div id="main">
-      {state.entities.length}
-      <Dev    canvasRef={canvasRef} state={state} setState={setState} />
-      <Canvas canvasRef={canvasRef} state={state} setState={setState} draw={draw}/>
+      <Dev    state={state} setState={setState} />
+      <Canvas canvasRef={canvasRef} state={state} draw={draw}/>
     </div>
   )
 }

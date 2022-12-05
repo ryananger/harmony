@@ -22,6 +22,10 @@ var Dev = function(props) {
     sprite.frameDuration = 8;
     sprite.currentAnimation = 'walkDown';
 
+    bulbasaur.methods.walk = function() {
+      bulbasaur.y += 10;
+    };
+
     props.setState({
       ...props.state,
       entities: function() {
