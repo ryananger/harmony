@@ -8,6 +8,16 @@ var tick = 0;
 var timeout;
 
 var Canvas = function(props) {
+  // draw clears canvas, renders each entity, and then updates each entity.
+  var draw = function(ctx, tick) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    props.state.entities.forEach(function(ent) {
+      ent.render(ctx);
+      ent.update();
+    });
+  };
+
   var renderCanvas = function() {
     const ctx = props.canvasRef.current.getContext('2d');
 
@@ -15,7 +25,7 @@ var Canvas = function(props) {
     var render = function() {
       clearTimeout(timeout);
       tick++;
-      props.draw(ctx, tick);
+      draw(ctx, tick);
 
       timeout = setTimeout(function() {
         animId = window.requestAnimationFrame(render);
@@ -29,7 +39,7 @@ var Canvas = function(props) {
     };
   };
 
-  useEffect(renderCanvas, [props.draw]);
+  useEffect(renderCanvas, [draw]);
 
   return (
     <canvas ref={props.canvasRef} className='canvas' width='1280' height='720' />

@@ -13,23 +13,12 @@ var App = function(props) {
     entities: []
   });
 
-  // create ref to pass to canvas element
   const canvasRef = useRef(null);
-
-  // draw function passed to canvas, clears canvas, renders each entity, and then updates each entity.
-  var draw = function(ctx, tick) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    state.entities.forEach(function(ent) {
-      ent.render(ctx);
-      ent.update();
-    })
-  };
 
   return (
     <div id="main">
       <Dev    state={state} setState={setState} />
-      <Canvas canvasRef={canvasRef} state={state} draw={draw}/>
+      <Canvas canvasRef={canvasRef} state={state} />
     </div>
   )
 }

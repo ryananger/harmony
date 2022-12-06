@@ -5,6 +5,7 @@ var Entity = function(x, y, actions) {
     id: idCount++,
     x: x,
     y: y,
+    speed: 20,
     images: [],
     currentImage: 0,
     actions: actions || {},
@@ -21,7 +22,7 @@ var Entity = function(x, y, actions) {
         height: height || width || null,
         x: x,
         y: y
-      }
+      };
 
       image.element.src = src;
 
@@ -38,8 +39,6 @@ var Entity = function(x, y, actions) {
     },
     render: function(ctx) {
       if (entity.nearCanvas(ctx)) {
-        console.log('rendering ' + entity.id);
-
         var img = entity.images[entity.currentImage];
         var sq = img.width;
 
@@ -58,6 +57,8 @@ var Entity = function(x, y, actions) {
         }
 
         ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x, entity.y, sq, sq);
+
+        return true;
       }
     },
     update: function() {
