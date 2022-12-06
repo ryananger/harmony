@@ -28,25 +28,37 @@ var Entity = function(x, y, actions) {
       entity.images.push(image);
       return image;
     },
+    nearCanvas: function(ctx) {
+      return (
+        entity.x > -200 &&
+        entity.x < ctx.canvas.width + 200 &&
+        entity.y > -200 &&
+        entity.y < ctx.canvas.height + 200
+      );
+    },
     render: function(ctx) {
-      var img = entity.images[entity.currentImage];
-      var sq = img.width;
+      if (entity.nearCanvas(ctx)) {
+        console.log('rendering ' + entity.id);
 
-      var frame;
-      var cur = img.currentAnimation;
+        var img = entity.images[entity.currentImage];
+        var sq = img.width;
 
-      if (img.animated) {
-        frame = img.frame + img.animations[cur].start;
-        img.frame++;
+        var frame;
+        var cur = img.currentAnimation;
 
-        if (img.frame >= img.sheetLength) {
-          img.frame = 0;
+        if (img.animated) {
+          frame = img.frame + img.animations[cur].start;
+          img.frame++;
+
+          if (img.frame >= img.animations[cur].length) {
+            img.frame = 0;
+          }
+        } else {
+          frame = 0;
         }
-      } else {
-        frame = 0;
-      }
 
-      ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x, entity.y, sq, sq);
+        ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x, entity.y, sq, sq);
+      }
     },
     update: function() {
       // onTick updates should be defined in this function upon entity creation

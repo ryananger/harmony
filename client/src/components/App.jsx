@@ -9,6 +9,8 @@ var App = function(props) {
   const [state, setState] = useState({
     view: 'home',
     fps: 8,
+
+    player: null,
     entities: []
   });
 
