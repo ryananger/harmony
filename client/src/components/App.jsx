@@ -12,32 +12,16 @@ var App = function(props) {
     entities: []
   });
 
+  // create ref to pass to canvas element
   const canvasRef = useRef(null);
 
+  // draw function passed to canvas, clears canvas, renders each entity, and then updates each entity.
   var draw = function(ctx, tick) {
-    //console.log('in draw: ', state.entities.length, tick);
-
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     state.entities.forEach(function(ent) {
-      var img = ent.images[ent.currentImage];
-      var sq = img.width;
-
-      var frame;
-      var cur = img.currentAnimation;
-
-      if (img.animated) {
-        frame = img.frame + img.animations[cur].start;
-        img.frame++;
-
-        if (img.frame >= img.sheetLength) {
-          img.frame = 0;
-        }
-      } else {
-        frame = 0;
-      }
-
-      ctx.drawImage(img.element, frame * sq, 0, sq, sq, ent.x, ent.y, sq, sq);
+      ent.render(ctx);
+      ent.update();
     })
   };
 

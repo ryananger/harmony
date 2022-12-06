@@ -6,26 +6,20 @@ import Entity from './Entity.js';
 
 var tick = 0;
 var timeout;
+
 var Canvas = function(props) {
   var renderCanvas = function() {
     const ctx = props.canvasRef.current.getContext('2d');
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    var fps = 8;
     var animId;
-
     var render = function() {
       clearTimeout(timeout);
       tick++;
       props.draw(ctx, tick);
 
-      props.state.entities.map(function(ent) {
-        ent.methods.walk();
-      })
-
       timeout = setTimeout(function() {
         animId = window.requestAnimationFrame(render);
-      }, 1000/fps);
+      }, 1000/props.state.fps);
     };
 
     render();
@@ -36,10 +30,6 @@ var Canvas = function(props) {
   };
 
   useEffect(renderCanvas, [props.draw]);
-
-  useEffect(function() {
-    console.log('in useEffect: ', props.state.entities.length);
-  }, [props.state.entities.length])
 
   return (
     <canvas ref={props.canvasRef} className='canvas' width='1280' height='720' />

@@ -5,11 +5,11 @@ import Entity from './Entity.js';
 var Dev = function(props) {
   var spawnEntity = function() {
     var x = Math.floor(Math.random() * 1280);
-    var y = Math.floor(Math.random() * 720);
+    var y = Math.floor(Math.random() * 200);
 
     var bulbasaur = Entity(x, y);
     var src = '../../public/bulbasprite.png';
-    var sprite = bulbasaur.methods.newImage(src, true, 72);
+    var sprite = bulbasaur.newImage(src, true, 72);
 
     sprite.animations = {
       walkDown:  {start: 0},
@@ -22,9 +22,13 @@ var Dev = function(props) {
     sprite.frameDuration = 8;
     sprite.currentAnimation = 'walkDown';
 
-    bulbasaur.methods.walk = function() {
+    bulbasaur.actions.walk = function() {
       bulbasaur.y += 10;
     };
+
+    bulbasaur.update = function() {
+      bulbasaur.actions.walk();
+    }
 
     props.setState({
       ...props.state,
