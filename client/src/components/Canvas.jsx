@@ -2,7 +2,7 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 
-import Entity from './Entity.js';
+import Entity from './entities/Entity.js';
 
 var tick = 0;
 var timeout;

@@ -2,7 +2,6 @@ import React from 'react';
 import {useState, useRef} from 'react';
 
 import Canvas from './Canvas.jsx';
-import Entity from './Entity.js';
 import Dev from './DevBar.jsx';
 
 var App = function(props) {

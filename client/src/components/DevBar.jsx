@@ -1,8 +1,8 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import Entity from './Entity.js';
-import Bulbasaur from './Bulbasaur.js';
-import Player from './Player.js';
+import Entity from './entities/Entity.js';
+import Bulbasaur from './entities/Bulbasaur.js';
+import Player from './entities/Player.js';
 
 var Dev = function(props) {
   var spawnPlayer = function() {
