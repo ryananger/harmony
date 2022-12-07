@@ -11,10 +11,13 @@ var Canvas = function(props) {
   // draw clears canvas, renders each entity, and then updates each entity.
   var draw = function(ctx, tick) {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    var updated = [];
 
     props.state.entities.forEach(function(ent) {
       ent.render(ctx);
       ent.update();
+
+      updated.push(ent);
     });
   };
 

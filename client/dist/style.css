@@ -47,6 +47,19 @@ h1 {
   align-items: stretch;
 }
 
+.header {
+  height: 100px;
+}
+
+.devInfo {
+  text-align: left;
+}
+
+.devLabel {
+  width: 600px;
+  justify-content: space-between;
+}
+
 .canvas {
   background-color: rgb(187, 206, 136);
 

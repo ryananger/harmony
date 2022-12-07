@@ -2,6 +2,9 @@ import Entity from './Entity.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
+  player.baseVel = 20;
+  player.speed = player.baseVel;
+
   var src = '../../public/playersprite.png';
   var sprite = player.newImage(src, true, 72);
   var keysPressed = [];
@@ -19,22 +22,32 @@ var Player = function(x, y) {
   sprite.currentAnimation = 'idle';
 
   player.actions.walk = function() {
+    if (player.speed < player.maxVel) {
+      player.speed += player.accel;
+    }
+
+    var speed = player.speed;
+
+    if(keysPressed.length >= 2) {
+      speed = Math.floor(speed/2);
+    }
+
     keysPressed.map(function(key) {
       switch (key) {
         case 'w':
-          player.y -= player.speed;
+          player.y -= speed;
           sprite.currentAnimation = 'walkUp';
           break;
         case 'a':
-          player.x -= player.speed;
+          player.x -= speed;
           sprite.currentAnimation = 'walkLeft';
           break;
         case 's':
-          player.y += player.speed;
+          player.y += speed;
           sprite.currentAnimation = 'walkDown';
           break;
         case 'd':
-          player.x += player.speed;
+          player.x += speed;
           sprite.currentAnimation = 'walkRight';
           break;
       };
@@ -47,6 +60,7 @@ var Player = function(x, y) {
     } else {
       if (sprite.currentAnimation != 'idle') {
         setTimeout(function() {
+          player.speed = player.baseVel;
           sprite.currentAnimation = 'idle';
           sprite.frame = 0;
         }, 100);

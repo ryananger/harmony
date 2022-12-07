@@ -53,9 +53,24 @@ var Dev = function(props) {
     console.log(props.state.entities);
   };
 
+  var playerCheck = function() {
+    if (props.state.player && props.state.camera) {
+      return (
+        <div>
+          <div className="devLabel h"><b>Player position: </b>{`(${props.state.player.x}, ${props.state.player.y})`}</div>
+          <div className="devLabel h"><b>Camera position: </b>{`(${props.state.camera.x}, ${props.state.camera.y})`}</div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className="header flex h">
-      {`View: ${props.state.view} ........ # of Entities: ${props.state.entities.length}`}
+      <div className="devInfo v">
+        <div className="devLabel h"><b>View: </b>{`${props.state.view}`}</div>
+        <div className="devLabel h"><b># Entities: </b>{`${props.state.entities.length}`}</div>
+        {playerCheck()}
+      </div>
       <div id="devButtons">
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.      </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.   </button>

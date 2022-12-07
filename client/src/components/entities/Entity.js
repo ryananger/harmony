@@ -5,7 +5,11 @@ var Entity = function(x, y, actions) {
     id: idCount++,
     x: x,
     y: y,
-    speed: 20,
+    speed: 5,
+    baseVel: 5,
+    maxVel: 20,
+    accel: 1,
+    following: null,
     images: [],
     currentImage: 0,
     actions: actions || {},
@@ -40,6 +44,11 @@ var Entity = function(x, y, actions) {
     render: function(ctx) {
       if (entity.nearCanvas(ctx)) {
         var img = entity.images[entity.currentImage];
+
+        if (!img) {
+          return;
+        }
+
         var sq = img.width;
 
         var frame;
