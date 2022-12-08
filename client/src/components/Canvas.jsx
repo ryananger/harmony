@@ -15,23 +15,26 @@ var Canvas = function(props) {
     }
 
     var camera = props.state.camera;
-    var offX = props.state.camera.x - ctx.canvas.width/2;
-    var offY = props.state.camera.y - ctx.canvas.height/2;
+    var tiles = props.state.tiles;
+    var entities = props.state.entities;
+
+    var offX = props.state.camera.x - (ctx.canvas.width/2);
+    var offY = props.state.camera.y - (ctx.canvas.height/2);
+    var buffer = ctx.save();
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
     ctx.save();
     ctx.translate(-offX, -offY);
 
-    props.state.tiles.forEach(function(tile) {
-      tile.render(ctx, props.state.camera);
+    tiles.forEach(function(tile) {
+      tile.render(ctx, camera);
       tile.update();
     });
 
-    props.state.entities.forEach(function(ent) {
-      ent.render(ctx, props.state.camera, tick);
-      ent.collisionCheck(props.state.entities, props.state.tiles);
-      ent.update();
+    entities.forEach(function(ent) {
+      ent.render(ctx, camera, tick);
+      ent.collisionCheck(entities, tiles);
+      ent.update(props.state, props.setState);
     });
 
     ctx.restore();

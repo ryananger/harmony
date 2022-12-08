@@ -5,16 +5,23 @@ var Entity = function(x, y, actions) {
     id: idCount++,
     x: x,
     y: y,
+    cx: Math.floor(x/72),
+    cy: Math.floor(x/72),
     width: 0,
     height: 0,
+
     speed: 5,
     baseVel: 5,
     maxVel: 20,
     accel: 1,
+
     following: null,
     drag: 1,
+
     isVisible: true,
     solid: false,
+    collisions: [],
+
     images: [],
     currentImage: 0,
     actions: actions || {},
@@ -55,44 +62,33 @@ var Entity = function(x, y, actions) {
       }
 
       var collisions = [];
-
-      entities.map(function(chk) {
-        if (!chk.solid) {
+      var check = function(entry) {
+        if (!entry.solid) {
           return;
         }
 
-        if (chk.id === entity.id) {
-          return;
-        }
-
-        var distX = Math.abs(entity.x - chk.x);
-        var distY = Math.abs(entity.y - chk.y);
+        var distX = Math.abs(entity.x - entry.x);
+        var distY = Math.abs(entity.y - entry.y);
         var dist = distX + distY;
 
-        if (dist <= chk.width) {
-          collisions.push(chk);
+        if (dist <= entry.width) {
+          collisions.push(entry);
         }
-      });
+      };
 
-      tiles.map(function(chk) {
-        if (!chk.solid) {
+      entities.map(function(ent) {
+        if (ent.id === entity.id) {
           return;
         }
 
-        var distX = Math.abs(entity.x - chk.x);
-        var distY = Math.abs(entity.y - chk.y);
-        var dist = distX + distY;
-
-        if (dist <= (chk.width/2)) {
-          collisions.push(chk);
-        }
+        check(ent);
       });
 
-      // if (collisions.length > 0) {
-      //   console.log('collision: ', true);
-      // } else {
-      //   console.log('collision: ', false);
-      // }
+      tiles.map(function(tile) {
+        check(tile);
+      });
+
+      entity.collisions = collisions;
     },
     render: function(ctx, cam, tick) {
       if (entity.nearCamera(cam) && entity.isVisible) {
@@ -128,7 +124,7 @@ var Entity = function(x, y, actions) {
       if (entity.following) {
         var distX = Math.abs(entity.x - entity.following.x);
         var distY = Math.abs(entity.y - entity.following.y);
-        var dist = distX + distY;
+        var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
         if (dist > distance) {
           var stepX = distX/entity.drag;
@@ -148,7 +144,10 @@ var Entity = function(x, y, actions) {
         }
       }
     },
-    update: function() {
+    update: function(state, setState) {
+      entity.cx = Math.floor(entity.x/72);
+      entity.cy = Math.floor(entity.y/72);
+
       // onTick updates should be defined in this function upon entity creation
     }
   }

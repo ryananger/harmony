@@ -12,6 +12,7 @@ var Dev = function(props) {
 
     var player = Player(0, 0);
     var cam = props.state.camera;
+    var entities = props.state.entities;
 
     cam.following = player;
 
@@ -20,8 +21,8 @@ var Dev = function(props) {
       camera: cam,
       player: player,
       entities: function() {
-        props.state.entities.unshift(player);
-        return props.state.entities;
+        entities.unshift(player);
+        return entities;
       }()
     })
   };
@@ -31,12 +32,13 @@ var Dev = function(props) {
     var y = -360 + Math.floor(Math.random() * 720);
 
     var bulbasaur = Bulbasaur(x, y);
+    var entities = props.state.entities;
 
     props.setState({
       ...props.state,
       entities: function() {
-        props.state.entities.unshift(bulbasaur);
-        return props.state.entities;
+        entities.unshift(bulbasaur);
+        return entities;
       }()
     })
   };
@@ -63,17 +65,6 @@ var Dev = function(props) {
     console.log(props.state.entities);
   };
 
-  var playerCheck = function() {
-    if (props.state.player && props.state.camera) {
-      return (
-        <div>
-          <div className="devLabel h"><b>Player position: </b>{`(${props.state.player.x}, ${props.state.player.y})`}</div>
-          <div className="devLabel h"><b>Camera position: </b>{`(${props.state.camera.x}, ${props.state.camera.y})`}</div>
-        </div>
-      )
-    }
-  };
-
   var followPlayer = function() {
     props.state.entities.map(function(ent) {
       if (ent.isCamera || ent.isPlayer) {
@@ -93,7 +84,6 @@ var Dev = function(props) {
       <div className="devInfo v">
         <div className="devLabel h"><b>View: </b>{`${props.state.view}`}</div>
         <div className="devLabel h"><b># Entities: </b>{`${props.state.entities.length}`}</div>
-        {playerCheck()}
       </div>
       <div id="devButtons">
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.           </button>

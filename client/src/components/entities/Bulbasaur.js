@@ -5,7 +5,7 @@ var Bulbasaur = function(x, y) {
   bulbasaur.baseVel = 1;
   bulbasaur.maxVel = 5;
   bulbasaur.solid = true;
-  bulbasaur.drag = 200;
+  bulbasaur.drag = 20;
 
   var src = '../../public/bulbasprite.png';
   var sprite = bulbasaur.newImage(src, true, 72);
@@ -59,7 +59,7 @@ var Bulbasaur = function(x, y) {
 
   bulbasaur.update = function() {
     if (bulbasaur.following) {
-      bulbasaur.follow(100);
+      bulbasaur.follow(400);
     } else {
       bulbasaur.actions.walk();
     }

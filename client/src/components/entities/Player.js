@@ -1,4 +1,5 @@
 import Entity from './Entity.js';
+import Game from '../Game.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
@@ -56,7 +57,11 @@ var Player = function(x, y) {
     });
   };
 
-  player.update = function() {
+  var update = player.update;
+  player.update = function(state, setState) {
+    update(state);
+    Game.tileGen(state, setState, player);
+
     if (keysPressed.length > 0) {
       player.actions.walk();
     } else {
