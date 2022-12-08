@@ -10,10 +10,14 @@ var Dev = function(props) {
       return;
     }
 
-    var player = Player(640, 360);
+    var player = Player(0, 0);
+    var cam = props.state.camera;
+
+    cam.following = player;
 
     props.setState({
       ...props.state,
+      camera: cam,
       player: player,
       entities: function() {
         props.state.entities.unshift(player);
@@ -23,8 +27,8 @@ var Dev = function(props) {
   };
 
   var spawnBulbasaur = function() {
-    var x = Math.floor(Math.random() * 1280);
-    var y = Math.floor(Math.random() * 200);
+    var x = -640 + Math.floor(Math.random() * 1280);
+    var y = -360 + Math.floor(Math.random() * 720);
 
     var bulbasaur = Bulbasaur(x, y);
 
@@ -41,7 +45,7 @@ var Dev = function(props) {
     props.setState({
       ...props.state,
       player: null,
-      entities: []
+      entities: [props.state.camera]
     })
   };
 
@@ -62,7 +66,21 @@ var Dev = function(props) {
         </div>
       )
     }
-  }
+  };
+
+  var followPlayer = function() {
+    props.state.entities.map(function(ent) {
+      if (ent.isCamera || ent.isPlayer) {
+        return;
+      }
+
+      if (!ent.following) {
+        ent.following = props.state.player;
+      } else {
+        ent.following = null;
+      }
+    })
+  };
 
   return (
     <div className="header flex h">
@@ -74,6 +92,7 @@ var Dev = function(props) {
       <div id="devButtons">
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.      </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.   </button>
+        <button id="spawnEntity"   onClick={followPlayer}>    Follow Player.     </button>
         <button id="logState"      onClick={logState}>        Log state.         </button>
         <button id="logEntities"   onClick={logEntities}>     Log entities.      </button>
         <button id="clearEntities" onClick={clearEntities}>   Clear entities.    </button>

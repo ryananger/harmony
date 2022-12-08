@@ -10,15 +10,30 @@ var timeout;
 var Canvas = function(props) {
   // draw clears canvas, renders each entity, and then updates each entity.
   var draw = function(ctx, tick) {
+    if (!props.state.camera) {
+      return;
+    }
+
+    var camera = props.state.camera;
+    var offX = props.state.camera.x - ctx.canvas.width/2;
+    var offY = props.state.camera.y - ctx.canvas.height/2;
+
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    var updated = [];
+
+    ctx.save();
+    ctx.translate(-offX, -offY);
+
+    props.state.tiles.forEach(function(tile) {
+      tile.render(ctx, props.state.camera);
+      tile.update();
+    });
 
     props.state.entities.forEach(function(ent) {
-      ent.render(ctx);
+      ent.render(ctx, props.state.camera, tick);
       ent.update();
-
-      updated.push(ent);
     });
+
+    ctx.restore();
   };
 
   var renderCanvas = function() {

@@ -15,7 +15,7 @@ var Bulbasaur = function(x, y) {
     walkRight: {start: 9, length: 3}
   };
 
-  sprite.frameDuration = 8;
+  sprite.frameDuration = 4;
   sprite.currentAnimation = 'walkDown';
 
   bulbasaur.getDirection = function() {
@@ -56,7 +56,11 @@ var Bulbasaur = function(x, y) {
   };
 
   bulbasaur.update = function() {
-    bulbasaur.actions.walk();
+    if (bulbasaur.following) {
+      bulbasaur.follow(100);
+    } else {
+      bulbasaur.actions.walk();
+    }
   }
 
   return bulbasaur;

@@ -2,8 +2,9 @@ import Entity from './Entity.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
-  player.baseVel = 20;
+  player.baseVel = 5;
   player.speed = player.baseVel;
+  player.isPlayer = true;
 
   var src = '../../public/playersprite.png';
   var sprite = player.newImage(src, true, 72);
@@ -18,7 +19,7 @@ var Player = function(x, y) {
     walkRight: {start: 9, length: 3}
   };
 
-  sprite.frameDuration = 8;
+  sprite.frameDuration = 4;
   sprite.currentAnimation = 'idle';
 
   player.actions.walk = function() {
