@@ -2,10 +2,11 @@ import Entity from './Entity.js';
 
 var Camera = function(x, y) {
   var camera = Entity(x, y);
-  var src = '../../public/camera.png';
-  camera.newImage(src, false, 32);
+  // var src = '../../public/camera.png';
+  // camera.newImage(src, false, 32);
   camera.isCamera = true;
   camera.isVisible = true;
+  camera.drag = 10;
 
   camera.follow = function(distance) {
     if (camera.following) {
@@ -14,8 +15,8 @@ var Camera = function(x, y) {
       var dist = distX + distY;
 
       if (dist > distance) {
-        var stepX = Math.floor(distX/2);
-        var stepY = Math.floor(distY/2);
+        var stepX = Math.floor(distX/camera.drag);
+        var stepY = Math.floor(distY/camera.drag);
 
         if (camera.x > camera.following.x) {
           camera.x -= stepX;

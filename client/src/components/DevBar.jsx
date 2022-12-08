@@ -41,6 +41,12 @@ var Dev = function(props) {
     })
   };
 
+  var spawn100 = function() {
+    for (var i = 0; i < 100; i++) {
+      spawnBulbasaur();
+    }
+  }
+
   var clearEntities = function() {
     props.setState({
       ...props.state,
@@ -90,12 +96,13 @@ var Dev = function(props) {
         {playerCheck()}
       </div>
       <div id="devButtons">
-        <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.      </button>
-        <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.   </button>
-        <button id="spawnEntity"   onClick={followPlayer}>    Follow Player.     </button>
-        <button id="logState"      onClick={logState}>        Log state.         </button>
-        <button id="logEntities"   onClick={logEntities}>     Log entities.      </button>
-        <button id="clearEntities" onClick={clearEntities}>   Clear entities.    </button>
+        <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.           </button>
+        <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.        </button>
+        <button id="spawn100"      onClick={spawn100}>        Spawn 100 Bulbasauri.   </button>
+        <button id="followPlayer"  onClick={followPlayer}>    Follow Player.          </button>
+        <button id="logState"      onClick={logState}>        Log state.              </button>
+        <button id="logEntities"   onClick={logEntities}>     Log entities.           </button>
+        <button id="clearEntities" onClick={clearEntities}>   Clear entities.         </button>
       </div>
     </div>
   )

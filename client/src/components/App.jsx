@@ -51,6 +51,9 @@ var App = function(props) {
             var tileFrame = Math.floor(Math.random() * 7);
 
             var tile = Tile(src, tileX, tileY, sq, tileFrame);
+            if (tileFrame === 1) {
+              tile.solid = true;
+            }
 
             state.tiles.unshift(tile);
             return state.tiles;

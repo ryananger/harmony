@@ -30,6 +30,7 @@ var Canvas = function(props) {
 
     props.state.entities.forEach(function(ent) {
       ent.render(ctx, props.state.camera, tick);
+      ent.collisionCheck(props.state.entities, props.state.tiles);
       ent.update();
     });
 

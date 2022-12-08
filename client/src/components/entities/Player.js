@@ -5,6 +5,7 @@ var Player = function(x, y) {
   player.baseVel = 5;
   player.speed = player.baseVel;
   player.isPlayer = true;
+  player.solid = true;
 
   var src = '../../public/playersprite.png';
   var sprite = player.newImage(src, true, 72);

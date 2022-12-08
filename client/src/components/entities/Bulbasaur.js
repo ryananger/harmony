@@ -4,6 +4,8 @@ var Bulbasaur = function(x, y) {
   var bulbasaur = Entity(x, y);
   bulbasaur.baseVel = 1;
   bulbasaur.maxVel = 5;
+  bulbasaur.solid = true;
+  bulbasaur.drag = 200;
 
   var src = '../../public/bulbasprite.png';
   var sprite = bulbasaur.newImage(src, true, 72);

@@ -12,7 +12,9 @@ var Entity = function(x, y, actions) {
     maxVel: 20,
     accel: 1,
     following: null,
+    drag: 1,
     isVisible: true,
+    solid: false,
     images: [],
     currentImage: 0,
     actions: actions || {},
@@ -46,6 +48,51 @@ var Entity = function(x, y, actions) {
         entity.y > cam.y - 3000 &&
         entity.y < cam.y + 3000
       );
+    },
+    collisionCheck: function(entities, tiles) {
+      if (!entity.solid) {
+        return;
+      }
+
+      var collisions = [];
+
+      entities.map(function(chk) {
+        if (!chk.solid) {
+          return;
+        }
+
+        if (chk.id === entity.id) {
+          return;
+        }
+
+        var distX = Math.abs(entity.x - chk.x);
+        var distY = Math.abs(entity.y - chk.y);
+        var dist = distX + distY;
+
+        if (dist <= chk.width) {
+          collisions.push(chk);
+        }
+      });
+
+      tiles.map(function(chk) {
+        if (!chk.solid) {
+          return;
+        }
+
+        var distX = Math.abs(entity.x - chk.x);
+        var distY = Math.abs(entity.y - chk.y);
+        var dist = distX + distY;
+
+        if (dist <= (chk.width/2)) {
+          collisions.push(chk);
+        }
+      });
+
+      // if (collisions.length > 0) {
+      //   console.log('collision: ', true);
+      // } else {
+      //   console.log('collision: ', false);
+      // }
     },
     render: function(ctx, cam, tick) {
       if (entity.nearCamera(cam) && entity.isVisible) {
@@ -84,8 +131,8 @@ var Entity = function(x, y, actions) {
         var dist = distX + distY;
 
         if (dist > distance) {
-          var stepX = Math.floor(distX/2);
-          var stepY = Math.floor(distY/2);
+          var stepX = distX/entity.drag;
+          var stepY = distY/entity.drag;
 
           if (entity.x > entity.following.x) {
             entity.x -= stepX;
