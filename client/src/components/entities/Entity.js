@@ -12,15 +12,17 @@ var Entity = function(x, y, actions) {
 
     speed: 5,
     baseVel: 5,
-    maxVel: 20,
+    maxVel: 10,
     accel: 1,
 
     following: null,
+    idle: false,
     drag: 1,
 
     isVisible: true,
-    solid: false,
+    collides: false,
     collisions: [],
+    repulsion: 1,
 
     images: [],
     currentImage: 0,
@@ -56,8 +58,8 @@ var Entity = function(x, y, actions) {
         entity.y < cam.y + 3000
       );
     },
-    collisionCheck: function(entities, tiles) {
-      if (!entity.solid) {
+    collisionCheck: function(x, y, entities, tiles) {
+      if (!entity.collides) {
         return;
       }
 
@@ -67,11 +69,11 @@ var Entity = function(x, y, actions) {
           return;
         }
 
-        var distX = Math.abs(entity.x - entry.x);
-        var distY = Math.abs(entity.y - entry.y);
-        var dist = distX + distY;
+        var distX = Math.abs((entity.x + (entity.width/2)) - (entry.x + (entry.width/2)));
+        var distY = Math.abs((entity.y + (entity.height/2)) - (entry.y + (entry.height/2)));
+        var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
-        if (dist <= entry.width) {
+        if (dist <= entry.width/2) {
           collisions.push(entry);
         }
       };
@@ -89,6 +91,12 @@ var Entity = function(x, y, actions) {
       });
 
       entity.collisions = collisions;
+
+      if (entity.collisions.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
     },
     render: function(ctx, cam, tick) {
       if (entity.nearCamera(cam) && entity.isVisible) {
@@ -103,13 +111,18 @@ var Entity = function(x, y, actions) {
         var cur = img.currentAnimation;
 
         if (img.animated) {
-          frame = img.frame + img.animations[cur].start;
-          if (tick % img.frameDuration === 0) {
-            img.frame++;
+          if (!entity.idle) {
+            frame = img.frame + img.animations[cur].start;
 
-            if (img.frame >= img.animations[cur].length) {
-              img.frame = 0;
+            if (tick % img.frameDuration === 0) {
+              img.frame++;
+
+              if (img.frame >= img.animations[cur].length) {
+                img.frame = 0;
+              }
             }
+          } else {
+            frame = img.animations[cur].start;
           }
         } else {
           frame = 0;
@@ -147,6 +160,35 @@ var Entity = function(x, y, actions) {
     update: function(state, setState) {
       entity.cx = Math.floor(entity.x/72);
       entity.cy = Math.floor(entity.y/72);
+
+      if (entity.collisions.length > 0) {
+        if (entity.solid) {
+          entity.collisions.map(function(col) {
+            var cx = col.x;
+            var cy = col.y;
+            var ex1 = entity.x;
+            var ex2 = entity.x + entity.width;
+            var ey1 = entity.y;
+            var ey2 = entity.y + entity.height;
+
+            if (cx > ex1) {
+              entity.x -= entity.repulsion + col.repulsion;
+            }
+
+            if (cx < ex1) {
+              entity.x += entity.repulsion + col.repulsion;
+            }
+
+            if (cy > ey1) {
+              entity.y -= entity.repulsion + col.repulsion;
+            }
+
+            if (cy < ey1) {
+              entity.y += entity.repulsion + col.repulsion;
+            }
+          })
+        }
+      }
 
       // onTick updates should be defined in this function upon entity creation
     }

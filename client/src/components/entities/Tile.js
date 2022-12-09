@@ -4,6 +4,7 @@ var Tile = function(src, x, y, sq, frame) {
   const tile = {
     id: idCount++,
     solid: false,
+    repulsion: 4,
     next: null,
     x: x,
     y: y,

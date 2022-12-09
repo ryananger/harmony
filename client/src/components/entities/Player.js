@@ -3,9 +3,10 @@ import Game from '../Game.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
-  player.baseVel = 5;
+  player.baseVel = 2;
   player.speed = player.baseVel;
   player.isPlayer = true;
+  player.collides = true;
   player.solid = true;
 
   var src = '../../public/playersprite.png';
@@ -59,7 +60,6 @@ var Player = function(x, y) {
 
   var update = player.update;
   player.update = function(state, setState) {
-    update(state);
     Game.tileGen(state, setState, player);
 
     if (keysPressed.length > 0) {
@@ -73,6 +73,8 @@ var Player = function(x, y) {
         }, 100);
       }
     }
+
+    update(state);
   }
 
   window.addEventListener('keydown', function (event) {

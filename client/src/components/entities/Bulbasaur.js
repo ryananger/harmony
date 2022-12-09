@@ -4,6 +4,7 @@ var Bulbasaur = function(x, y) {
   var bulbasaur = Entity(x, y);
   bulbasaur.baseVel = 1;
   bulbasaur.maxVel = 5;
+  bulbasaur.collides = true;
   bulbasaur.solid = true;
   bulbasaur.drag = 20;
 
@@ -32,8 +33,8 @@ var Bulbasaur = function(x, y) {
 
   bulbasaur.getDirection();
 
-  bulbasaur.actions.walk = function() {
-    if (Math.random() < 0.01) {
+  bulbasaur.actions.walk = function(state) {
+    if (Math.random() < 0.05) {
       bulbasaur.getDirection();
     }
 
@@ -43,26 +44,58 @@ var Bulbasaur = function(x, y) {
 
     switch (bulbasaur.direction) {
       case 'Up':
-        bulbasaur.y -= bulbasaur.speed;
+        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y - bulbasaur.speed, state.entities, state.tiles)) {
+          bulbasaur.y -= bulbasaur.speed;
+        } else {
+          bulbasaur.y += bulbasaur.speed;
+          bulbasaur.actions.bump();
+        }
         break;
       case 'Down':
-        bulbasaur.y += bulbasaur.speed;
+        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y + bulbasaur.speed, state.entities, state.tiles)) {
+          bulbasaur.y += bulbasaur.speed;
+        } else {
+          bulbasaur.y -= bulbasaur.speed;
+          bulbasaur.actions.bump();
+        }
         break;
       case 'Left':
-        bulbasaur.x -= bulbasaur.speed;
+        if (!bulbasaur.collisionCheck(bulbasaur.x - bulbasaur.speed, bulbasaur.y, state.entities, state.tiles)) {
+          bulbasaur.x -= bulbasaur.speed;
+        } else {
+          bulbasaur.x += bulbasaur.speed;
+          bulbasaur.actions.bump();
+        }
         break;
       case 'Right':
-        bulbasaur.x += bulbasaur.speed;
+        if (!bulbasaur.collisionCheck(bulbasaur.x + bulbasaur.speed, bulbasaur.y, state.entities, state.tiles)) {
+          bulbasaur.x += bulbasaur.speed;
+        } else {
+          bulbasaur.x -= bulbasaur.speed;
+          bulbasaur.actions.bump();
+        }
         break;
     }
   };
 
-  bulbasaur.update = function() {
+  bulbasaur.actions.bump = function() {
+    bulbasaur.idle = true;
+    setTimeout(function() {
+      bulbasaur.idle = false;
+      bulbasaur.speed = bulbasaur.baseVel;
+      bulbasaur.getDirection();
+    }, 1000);
+  };
+
+  var update = bulbasaur.update;
+  bulbasaur.update = function(state, setState) {
     if (bulbasaur.following) {
       bulbasaur.follow(400);
-    } else {
-      bulbasaur.actions.walk();
+    } else if (!bulbasaur.idle) {
+      bulbasaur.actions.walk(state);
     }
+
+    update(state);
   }
 
   return bulbasaur;

@@ -6,13 +6,13 @@ var Camera = function(x, y) {
   // camera.newImage(src, false, 32);
   camera.isCamera = true;
   camera.isVisible = true;
-  camera.drag = 4;
+  camera.drag = 8;
 
   camera.follow = function(distance) {
     if (camera.following) {
       var distX = Math.abs(camera.x - camera.following.x);
       var distY = Math.abs(camera.y - camera.following.y);
-      var dist = distX + distY;
+      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
       if (dist > distance) {
         var stepX = Math.floor(distX/camera.drag);
@@ -36,7 +36,7 @@ var Camera = function(x, y) {
   camera.update = function() {
     if (camera.following) {
       camera.maxVel = camera.following.maxVel;
-      camera.follow(1);
+      camera.follow(5);
     }
   }
 

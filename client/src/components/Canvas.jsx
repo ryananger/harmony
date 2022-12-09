@@ -20,7 +20,6 @@ var Canvas = function(props) {
 
     var offX = props.state.camera.x - (ctx.canvas.width/2);
     var offY = props.state.camera.y - (ctx.canvas.height/2);
-    var buffer = ctx.save();
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.save();
@@ -33,7 +32,7 @@ var Canvas = function(props) {
 
     entities.forEach(function(ent) {
       ent.render(ctx, camera, tick);
-      ent.collisionCheck(entities, tiles);
+      ent.collisionCheck(ent.x, ent.y, entities, tiles);
       ent.update(props.state, props.setState);
     });
 
