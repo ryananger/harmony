@@ -5,7 +5,7 @@ import axios from 'axios';
 var tick = 0;
 var renderTimeout;
 
-var Canvas = function({Game, canvasRef}) {
+var Canvas = function({Game}) {
   // draw clears canvas, then renders and updates each entity and tile, according to camera offset.
   var draw = function(ctx, tick) {
     if (!Game.camera) {
@@ -52,7 +52,7 @@ var Canvas = function({Game, canvasRef}) {
 
   // renderCanvas increments tick, calls draw, and renders according to Game.fps.
   var renderCanvas = function() {
-    const ctx = canvasRef.current.getContext('2d');
+    const ctx = document.getElementById('canvas').getContext('2d');
 
     var animId;
     var render = function() {
@@ -75,7 +75,7 @@ var Canvas = function({Game, canvasRef}) {
   useEffect(renderCanvas, [tick]);
 
   return (
-    <canvas ref={canvasRef} className='canvas' width='1280' height='720' />
+    <canvas id='canvas' className='canvas' width='1280' height='720' />
   )
 };
 
