@@ -1,4 +1,5 @@
 import Entity from './Entity.js';
+import UI from './UI.js';
 
 var Bulbasaur = function(x, y) {
   var bulbasaur = Entity(x, y);
@@ -8,8 +9,16 @@ var Bulbasaur = function(x, y) {
   bulbasaur.solid = true;
   bulbasaur.drag = 20;
 
+  var hp = UI(x, y);
+  bulbasaur.healthBar = hp;
+  hp.following = bulbasaur;
+  hp.offX = -16;
+  hp.offY = -24;
+
   var src = '../../public/bulbasprite.png';
+  var hpSrc = '../../public/hp.png';
   var sprite = bulbasaur.newImage(src, true, 72);
+  var hpImg =  hp.newImage(hpSrc, false, 18);
 
   sprite.animations = {
     walkDown:  {start: 0, length: 3},

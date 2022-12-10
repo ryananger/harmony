@@ -32,14 +32,15 @@ var Game = {
   tileGen: function(state, setState, player) {
     var grid  = state.grid;
     var tiles = state.tiles;
+    var width = 20;
 
-    for (var i = -20; i < 21; i++) {
+    for (var i = Math.floor(-width/2); i < Math.ceil(width/2); i++) {
       var chkX = player.cx + i;
       if (!grid.hasOwnProperty(chkX)) {
         grid[chkX] = {};
       }
 
-      for (var j = -20; j < 21; j++) {
+      for (var j = Math.floor(-width/2); j < Math.ceil(width/2); j++) {
         var chkY = player.cy + j;
 
         if (!grid[chkX].hasOwnProperty(chkY)) {

@@ -17,6 +17,7 @@ var Canvas = function(props) {
     var camera   = props.state.camera;
     var tiles    = props.state.tiles;
     var entities = props.state.entities;
+    var uis      = props.state.uis;
 
     var offX = camera.x - (ctx.canvas.width/2);
     var offY = camera.y - (ctx.canvas.height/2);
@@ -36,6 +37,15 @@ var Canvas = function(props) {
       if (ent.nearCamera(camera)) {
         ent.render(ctx, camera, tick);
         ent.update(props.state, props.setState);
+      }
+    });
+
+    uis.forEach(function(ui) {
+      if (ui.nearCamera(camera)) {
+        if (props.state.visibleUI) {
+          ui.render(ctx, camera, tick);
+        }
+        ui.update();
       }
     });
 

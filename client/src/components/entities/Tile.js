@@ -5,7 +5,7 @@ var Tile = function(src, x, y, sq, frame) {
     id: idCount++,
     solid: false,
     collides: false,
-    repulsion: 5,
+    repulsion: 10,
     next: null,
     x: x,
     y: y,

@@ -41,13 +41,15 @@ var Dev = function(props) {
 
     var bulbasaur = Bulbasaur(x, y);
     var entities = props.state.entities;
+    var uis = props.state.uis;
+
+    entities.unshift(bulbasaur);
+    uis.unshift(bulbasaur.healthBar);
 
     props.setState({
       ...props.state,
-      entities: function() {
-        entities.unshift(bulbasaur);
-        return entities;
-      }()
+      entities: entities,
+      uis: uis
     })
   };
 
@@ -67,7 +69,8 @@ var Dev = function(props) {
     props.setState({
       ...props.state,
       player: null,
-      entities: [props.state.camera]
+      entities: [props.state.camera],
+      uis: []
     })
   };
 
@@ -85,6 +88,20 @@ var Dev = function(props) {
     })
   };
 
+  var toggleUI = function() {
+    if (props.state.visibleUI) {
+      props.setState({
+        ...props.state,
+        visibleUI: false
+      });
+    } else {
+      props.setState({
+        ...props.state,
+        visibleUI: true
+      });
+    }
+  };
+
   var logState = function() {
     console.log(props.state);
   };
@@ -100,6 +117,7 @@ var Dev = function(props) {
         <div className="devLabel h"><b># Entities: </b>{`${props.state.entities.length}`}</div>
       </div>
       <div id="devButtons">
+        <button id="toggleUI"      onClick={toggleUI}>        Toggle UI.          </button>
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.           </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.        </button>
         <button id="spawn100"      onClick={spawn100}>        Spawn 100 Bulbasauri.   </button>

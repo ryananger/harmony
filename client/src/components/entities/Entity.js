@@ -22,6 +22,7 @@ var Entity = function(x, y, actions) {
     isVisible: true,
     collides: false,
     collisions: [],
+    colliding: false,
     repulsion: 2,
 
     images: [],
@@ -74,7 +75,6 @@ var Entity = function(x, y, actions) {
         var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
         if (dist <= entry.width/2) {
-
           collisions.push({collision: entry, dist: dist, distX: distX, distY: distY});
         }
       };
@@ -175,17 +175,13 @@ var Entity = function(x, y, actions) {
           if (distX > distY) {
             if (cx > ex1) {
               entity.x -= entity.repulsion + col.repulsion;
-            }
-
-            if (cx < ex1) {
+            } else {
               entity.x += entity.repulsion + col.repulsion;
             }
           } else {
             if (cy > ey1) {
               entity.y -= entity.repulsion + col.repulsion;
-            }
-
-            if (cy < ey1) {
+            } else{
               entity.y += entity.repulsion + col.repulsion;
             }
           }

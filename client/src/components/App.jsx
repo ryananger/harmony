@@ -11,6 +11,8 @@ var App = function(props) {
     fps: 60,
     camera: null,
     cameras: [],
+    visibleUI: false,
+    uis: [],
 
     player: null,
     entities: [],
