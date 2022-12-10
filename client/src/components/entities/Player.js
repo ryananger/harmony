@@ -59,8 +59,8 @@ var Player = function(x, y) {
   };
 
   var update = player.update;
-  player.update = function(state, setState) {
-    Game.tileGen(state, setState, player);
+  player.update = function(Game) {
+    Game.tileGen(player);
 
     if (keysPressed.length > 0) {
       player.actions.walk();
@@ -74,7 +74,7 @@ var Player = function(x, y) {
       }
     }
 
-    update(state);
+    update(Game);
   }
 
   window.addEventListener('keydown', function (event) {

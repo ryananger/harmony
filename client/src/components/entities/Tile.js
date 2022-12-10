@@ -3,17 +3,21 @@ var idCount = 0;
 var Tile = function(src, x, y, sq, frame) {
   const tile = {
     id: idCount++,
+    next: null,
+
     solid: false,
     collides: false,
     repulsion: 10,
-    next: null,
+
     x: x,
     y: y,
     cx: x/sq,
     cy: y/sq,
+
     sq: sq,
     width: sq,
     height: sq,
+    frame: frame,
     image: function() {
       var image = {
         element: new Image(),
@@ -23,7 +27,6 @@ var Tile = function(src, x, y, sq, frame) {
       image.element.src = src;
       return image;
     }(),
-    frame: frame,
     nearCamera: function(cam) {
       return (
         tile.x > cam.x - 1500 &&

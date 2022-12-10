@@ -1,23 +1,21 @@
 import React from 'react';
-import {useState, useEffect, useRef} from 'react';
+import {useEffect} from 'react';
 import axios from 'axios';
 
 var tick = 0;
-var updates = 0;
 var renderTimeout;
-var updateTimeout;
 
-var Canvas = function({state, setState, canvasRef}) {
+var Canvas = function({Game, canvasRef}) {
   // draw clears canvas, then renders and updates each entity and tile, according to camera offset.
   var draw = function(ctx, tick) {
-    if (!state.camera) {
+    if (!Game.camera) {
       return;
     }
 
-    var camera   = state.camera;
-    var tiles    = state.tiles;
-    var entities = state.entities;
-    var uis      = state.uis;
+    var camera   = Game.camera;
+    var tiles    = Game.tiles;
+    var entities = Game.entities;
+    var uis      = Game.uis;
 
     var offX = camera.x - (ctx.canvas.width/2);
     var offY = camera.y - (ctx.canvas.height/2);
@@ -36,13 +34,13 @@ var Canvas = function({state, setState, canvasRef}) {
     entities.forEach(function(ent) {
       if (ent.nearCamera(camera)) {
         ent.render(ctx, camera, tick);
-        ent.update(state, setState);
+        ent.update(Game);
       }
     });
 
     uis.forEach(function(ui) {
       if (ui.nearCamera(camera)) {
-        if (state.visibleUI) {
+        if (Game.visibleUI) {
           ui.render(ctx, camera, tick);
         }
         ui.update();
@@ -52,7 +50,7 @@ var Canvas = function({state, setState, canvasRef}) {
     ctx.restore();
   };
 
-  // renderCanvas increments tick, calls draw, and renders according to state.fps.
+  // renderCanvas increments tick, calls draw, and renders according to Game.fps.
   var renderCanvas = function() {
     const ctx = canvasRef.current.getContext('2d');
 
@@ -64,7 +62,7 @@ var Canvas = function({state, setState, canvasRef}) {
 
       renderTimeout = setTimeout(function() {
         animId = window.requestAnimationFrame(render);
-      }, 1000/state.fps);
+      }, 1000/Game.fps);
     };
 
     render();

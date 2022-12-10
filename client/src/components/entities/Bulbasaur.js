@@ -44,7 +44,7 @@ var Bulbasaur = function(x, y) {
 
   bulbasaur.getDirection();
 
-  bulbasaur.actions.walk = function(state) {
+  bulbasaur.actions.walk = function(Game) {
     if (Math.random() < 0.01) {
       bulbasaur.getDirection();
     }
@@ -55,7 +55,7 @@ var Bulbasaur = function(x, y) {
 
     switch (bulbasaur.direction) {
       case 'Up':
-        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y - bulbasaur.speed, state.entities, state.tiles)) {
+        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y - bulbasaur.speed, Game.entities, Game.tiles)) {
           bulbasaur.y -= bulbasaur.speed;
         } else {
           bulbasaur.y += bulbasaur.speed;
@@ -63,7 +63,7 @@ var Bulbasaur = function(x, y) {
         }
         break;
       case 'Down':
-        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y + bulbasaur.speed, state.entities, state.tiles)) {
+        if (!bulbasaur.collisionCheck(bulbasaur.x, bulbasaur.y + bulbasaur.speed, Game.entities, Game.tiles)) {
           bulbasaur.y += bulbasaur.speed;
         } else {
           bulbasaur.y -= bulbasaur.speed;
@@ -71,7 +71,7 @@ var Bulbasaur = function(x, y) {
         }
         break;
       case 'Left':
-        if (!bulbasaur.collisionCheck(bulbasaur.x - bulbasaur.speed, bulbasaur.y, state.entities, state.tiles)) {
+        if (!bulbasaur.collisionCheck(bulbasaur.x - bulbasaur.speed, bulbasaur.y, Game.entities, Game.tiles)) {
           bulbasaur.x -= bulbasaur.speed;
         } else {
           bulbasaur.x += bulbasaur.speed;
@@ -79,7 +79,7 @@ var Bulbasaur = function(x, y) {
         }
         break;
       case 'Right':
-        if (!bulbasaur.collisionCheck(bulbasaur.x + bulbasaur.speed, bulbasaur.y, state.entities, state.tiles)) {
+        if (!bulbasaur.collisionCheck(bulbasaur.x + bulbasaur.speed, bulbasaur.y, Game.entities, Game.tiles)) {
           bulbasaur.x += bulbasaur.speed;
         } else {
           bulbasaur.x -= bulbasaur.speed;
@@ -111,14 +111,14 @@ var Bulbasaur = function(x, y) {
   }
 
   var update = bulbasaur.update;
-  bulbasaur.update = function(state, setState) {
+  bulbasaur.update = function(Game) {
     if (bulbasaur.following) {
       bulbasaur.follow(400);
     } else if (!bulbasaur.idle) {
-      bulbasaur.actions.walk(state);
+      bulbasaur.actions.walk(Game);
     }
 
-    update(state);
+    update(Game);
   }
 
   return bulbasaur;

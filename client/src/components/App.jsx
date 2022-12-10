@@ -5,34 +5,21 @@ import Canvas from './Canvas.jsx';
 import Dev from './DevBar.jsx';
 import Game from './Game.js';
 
-var App = function(props) {
-  const [state, setState] = useState({
-    view: 'home',
-    fps: 60,
-    camera: null,
-    cameras: [],
-    visibleUI: false,
-    uis: [],
-
-    player: null,
-    entities: [],
-
-    tiles: [],
-    tilesize: 72,
-    grid: {}
-  });
+var App = function() {
+  const [tick, updateReact] = useState(0);
 
   const canvasRef = useRef(null);
 
   useEffect(function() {
-    Game.initTiles(state, setState);
-    Game.newCamera(0, 0, state, setState);
-  }, []);
+    setTimeout(function() {
+      updateReact(tick + 1);
+    }, 100)
+  }, [tick])
 
   return (
     <div id="main">
-      <Dev    state={state} setState={setState} />
-      <Canvas state={state} setState={setState} canvasRef={canvasRef} />
+      <Dev    Game={Game} />
+      <Canvas Game={Game} canvasRef={canvasRef} />
     </div>
   )
 }
