@@ -1,23 +1,26 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
 
-import Canvas from './Canvas.jsx';
 import Dev from './DevBar.jsx';
 import Game from './Game/Game.js';
 
 var App = function() {
-  const [tick, updateReact] = useState(0);
+  const [updates, updateReact] = useState(0);
+  const updateInterval = 1000;
 
-  useEffect(function() {
+  const reactLoop = function() {
     setTimeout(function() {
-      updateReact(tick + 1);
-    }, 100)
-  }, [tick]);
+      updateReact(updates + 1);
+    }, updateInterval);
+  };
+
+  useEffect(reactLoop, [updates]);
+  useEffect(Game.gameLoop, []);
 
   return (
     <div id="main">
       <Dev    Game={Game} />
-      <Canvas Game={Game} />
+      <canvas id='canvas' className='canvas' width='1280' height='720' />
     </div>
   )
 }

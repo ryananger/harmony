@@ -35,7 +35,7 @@ var Tile = function(src, x, y, sq, frame) {
         tile.y < cam.y + 1500
       );
     },
-    render: function(ctx, cam) {
+    draw: function(Game, ctx, cam) {
       var frame = tile.frame;
       var sq = tile.sq;
 
@@ -43,7 +43,7 @@ var Tile = function(src, x, y, sq, frame) {
 
       return true;
     },
-    update: function() {
+    update: function(Game) {
       // onTick updates should be defined in this function upon tile creation
     }
   }

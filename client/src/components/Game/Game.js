@@ -1,6 +1,9 @@
 import Tile from './Tile.js';
 import Camera from './Camera.js';
 
+var tick = 0;
+var renderTimeout;
+
 var Game = {
   view: 'home',
   fps: 60,
@@ -16,6 +19,7 @@ var Game = {
   tiles: [],
   tilesize: 72,
   grid: {},
+
   initTiles: function() {
     var grid  = Game.grid;
     var tiles = Game.tiles;
@@ -28,24 +32,18 @@ var Game = {
       }
     }
   },
-  newCamera: function(x, y) {
-    var cam = Camera(x, y);
-
-    Game.camera = cam;
-    Game.cameras.unshift(cam);
-    Game.entities.unshift(cam);
-  },
   tileGen: function(player) {
     var grid  = Game.grid;
-    var width = 20;
+    var width = 25;
+    var half = Math.floor(width/2);
 
-    for (var i = Math.floor(-width/2); i < Math.ceil(width/2); i++) {
+    for (var i = -half; i < half; i++) {
       var chkX = player.cx + i;
       if (!grid.hasOwnProperty(chkX)) {
         grid[chkX] = {};
       }
 
-      for (var j = Math.floor(-width/2); j < Math.ceil(width/2); j++) {
+      for (var j = -half; j < half; j++) {
         var chkY = player.cy + j;
 
         if (!grid[chkX].hasOwnProperty(chkY)) {
@@ -74,6 +72,62 @@ var Game = {
 
     Game.grid[x][y] = tile;
     Game.tiles.unshift(tile);
+  },
+
+  newCamera: function(x, y) {
+    var cam = Camera(x, y);
+
+    Game.camera = cam;
+    Game.cameras.unshift(cam);
+    Game.entities.unshift(cam);
+  },
+  update: function(ctx, tick) {
+    if (!Game.camera) {
+      return;
+    }
+
+    var camera   = Game.camera;
+    var offX = camera.x - (ctx.canvas.width/2);
+    var offY = camera.y - (ctx.canvas.height/2);
+
+    var all = [
+      ...Game.tiles,
+      ...Game.entities,
+      ...Game.uis
+    ];
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.save();
+    ctx.translate(-offX, -offY);
+
+    all.map(function(entry) {
+      if (entry.nearCamera(camera)) {
+        entry.update(Game);
+        entry.draw(Game, ctx, camera, tick);
+      }
+    });
+
+    ctx.restore();
+  },
+  gameLoop: function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+
+    var animId;
+    var render = function() {
+      clearTimeout(renderTimeout);
+      tick++;
+      Game.update(ctx, tick);
+
+      renderTimeout = setTimeout(function() {
+        animId = window.requestAnimationFrame(render);
+      }, 1000/Game.fps);
+    };
+
+    render();
+
+    return function() {
+      window.cancelAnimationFrame(animId);
+    };
   }
 };
 

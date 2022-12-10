@@ -101,41 +101,6 @@ var Entity = function(x, y, actions) {
         return true;
       }
     },
-    render: function(ctx, cam, tick) {
-      if (entity.nearCamera(cam) && entity.isVisible) {
-        var img = entity.images[entity.currentImage];
-
-        if (!img) {
-          return;
-        }
-
-        var sq = img.width;
-        var frame;
-        var cur = img.currentAnimation;
-
-        if (img.animated) {
-          if (!entity.idle) {
-            frame = img.frame + img.animations[cur].start;
-
-            if (tick % img.frameDuration === 0) {
-              img.frame++;
-
-              if (img.frame >= img.animations[cur].length) {
-                img.frame = 0;
-              }
-            }
-          } else {
-            frame = img.animations[cur].start;
-          }
-        } else {
-          frame = 0;
-        }
-
-        ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x - (sq/2), entity.y - (sq/2), sq, sq);
-
-        return true;
-      }
-    },
     follow: function(distance) {
       if (entity.following) {
         var distX = Math.abs(entity.x - entity.following.x);
@@ -188,6 +153,41 @@ var Entity = function(x, y, actions) {
             }
           }
         })
+      }
+    },
+    draw: function(Game, ctx, cam, tick) {
+      if (entity.isVisible) {
+        var img = entity.images[entity.currentImage];
+
+        if (!img) {
+          return;
+        }
+
+        var sq = img.width;
+        var frame;
+        var cur = img.currentAnimation;
+
+        if (img.animated) {
+          if (!entity.idle) {
+            frame = img.frame + img.animations[cur].start;
+
+            if (tick % img.frameDuration === 0) {
+              img.frame++;
+
+              if (img.frame >= img.animations[cur].length) {
+                img.frame = 0;
+              }
+            }
+          } else {
+            frame = img.animations[cur].start;
+          }
+        } else {
+          frame = 0;
+        }
+
+        ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x - (sq/2), entity.y - (sq/2), sq, sq);
+
+        return true;
       }
     },
     update: function(Game) {

@@ -3,6 +3,8 @@ var idCount = 0;
 var UI = function(x, y, actions) {
   const ui = {
     id: idCount++,
+    isUI: true,
+
     x: x,
     y: y,
     offX: 0,
@@ -50,8 +52,30 @@ var UI = function(x, y, actions) {
         ui.y < cam.y + 3000
       );
     },
-    render: function(ctx, cam, tick) {
-      if (ui.nearCamera(cam) && ui.isVisible) {
+    follow: function(distance) {
+      var distX = Math.abs(ui.x - ui.following.x);
+      var distY = Math.abs(ui.y - ui.following.y);
+      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
+
+      if (dist > distance) {
+        var stepX = distX/ui.drag;
+        var stepY = distY/ui.drag;
+
+        if (ui.x > ui.following.x) {
+          ui.x -= stepX;
+        } else {
+          ui.x += stepX;
+        }
+
+        if (ui.y > ui.following.y) {
+          ui.y -= stepY;
+        } else {
+          ui.y += stepY;
+        }
+      }
+    },
+    draw: function(Game, ctx, cam, tick) {
+      if (Game.visibleUI) {
         var img = ui.images[ui.currentImage];
 
         if (!img) {
@@ -83,28 +107,6 @@ var UI = function(x, y, actions) {
         ctx.drawImage(img.element, frame * sq, 0, sq, sq, ui.x + ui.offX - (sq/2), ui.y + ui.offY - (sq/2), sq, sq);
 
         return true;
-      }
-    },
-    follow: function(distance) {
-      var distX = Math.abs(ui.x - ui.following.x);
-      var distY = Math.abs(ui.y - ui.following.y);
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
-
-      if (dist > distance) {
-        var stepX = distX/ui.drag;
-        var stepY = distY/ui.drag;
-
-        if (ui.x > ui.following.x) {
-          ui.x -= stepX;
-        } else {
-          ui.x += stepX;
-        }
-
-        if (ui.y > ui.following.y) {
-          ui.y -= stepY;
-        } else {
-          ui.y += stepY;
-        }
       }
     },
     update: function() {
