@@ -4,24 +4,24 @@ import Entity from './entities/Entity.js';
 import Bulbasaur from './entities/Bulbasaur.js';
 import Player from './entities/Player.js';
 
-var Dev = function(props) {
+var Dev = function({state, setState}) {
   var spawnPlayer = function() {
-    if (props.state.player) {
+    if (state.player) {
       return;
     }
 
-    var player = Player(0, 0);
-    var cam = props.state.camera;
-    var entities = props.state.entities;
+    var p = Player(0, 0);
+    var cam = state.camera;
+    var entities = state.entities;
 
-    cam.following = player;
+    cam.following = p;
 
-    props.setState({
-      ...props.state,
+    setState({
+      ...state,
       camera: cam,
-      player: player,
+      player: p,
       entities: function() {
-        entities.unshift(player);
+        entities.unshift(p);
         return entities;
       }()
     })
@@ -40,14 +40,14 @@ var Dev = function(props) {
     var y = -h/2 + Math.floor(Math.random() * h);
 
     var bulbasaur = Bulbasaur(x, y);
-    var entities = props.state.entities;
-    var uis = props.state.uis;
+    var entities = state.entities;
+    var uis = state.uis;
 
     entities.unshift(bulbasaur);
     uis.unshift(bulbasaur.healthBar);
 
-    props.setState({
-      ...props.state,
+    setState({
+      ...state,
       entities: entities,
       uis: uis
     })
@@ -66,22 +66,22 @@ var Dev = function(props) {
   };
 
   var clearEntities = function() {
-    props.setState({
-      ...props.state,
+    setState({
+      ...state,
       player: null,
-      entities: [props.state.camera],
+      entities: [state.camera],
       uis: []
     })
   };
 
   var followPlayer = function() {
-    props.state.entities.map(function(ent) {
+    state.entities.map(function(ent) {
       if (ent.isCamera || ent.isPlayer) {
         return;
       }
 
       if (!ent.following) {
-        ent.following = props.state.player;
+        ent.following = player;
       } else {
         ent.following = null;
       }
@@ -89,40 +89,40 @@ var Dev = function(props) {
   };
 
   var toggleUI = function() {
-    if (props.state.visibleUI) {
-      props.setState({
-        ...props.state,
+    if (state.visibleUI) {
+      setState({
+        ...state,
         visibleUI: false
       });
     } else {
-      props.setState({
-        ...props.state,
+      setState({
+        ...state,
         visibleUI: true
       });
     }
   };
 
   var logState = function() {
-    console.log(props.state);
+    console.log(state);
   };
 
   var logEntities = function() {
-    console.log(props.state.entities);
+    console.log(state.entities);
   };
 
   return (
-    <div className="header flex h">
-      <div className="devInfo v">
-        <div className="devLabel h"><b>View: </b>{`${props.state.view}`}</div>
-        <div className="devLabel h"><b># Entities: </b>{`${props.state.entities.length}`}</div>
+    <div className="header flex v">
+      <div className="devInfo h">
+        <div className="devLabel h"><b>View:&nbsp;</b>        {`${state.view}`}</div>
+        <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${state.entities.length}`}</div>
       </div>
       <div id="devButtons">
-        <button id="toggleUI"      onClick={toggleUI}>        Toggle UI.          </button>
-        <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.           </button>
-        <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.        </button>
-        <button id="spawn100"      onClick={spawn100}>        Spawn 100 Bulbasauri.   </button>
-        <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000 Bulbasauri.  </button>
-        <button id="followPlayer"  onClick={followPlayer}>    Follow Player.          </button>
+        <button id="toggleUI"      onClick={toggleUI}>        UI.                     </button>
+        <button id="spawnPlayer"   onClick={spawnPlayer}>     Player.                 </button>
+        <button id="spawnEntity"   onClick={spawnBulbasaur}>  Bulbasaur.              </button>
+        <button id="spawn100"      onClick={spawn100}>        Spawn 100.              </button>
+        <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000.             </button>
+        <button id="followPlayer"  onClick={followPlayer}>    Follow.                 </button>
         <button id="logState"      onClick={logState}>        Log state.              </button>
         <button id="logEntities"   onClick={logEntities}>     Log entities.           </button>
         <button id="clearEntities" onClick={clearEntities}>   Clear entities.         </button>

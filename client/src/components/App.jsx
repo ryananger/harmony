@@ -32,7 +32,7 @@ var App = function(props) {
   return (
     <div id="main">
       <Dev    state={state} setState={setState} />
-      <Canvas canvasRef={canvasRef} state={state} setState={setState} />
+      <Canvas state={state} setState={setState} canvasRef={canvasRef} />
     </div>
   )
 }

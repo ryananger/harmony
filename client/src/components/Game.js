@@ -6,10 +6,10 @@ var Game = {
     var grid  = state.grid;
     var tiles = state.tiles;
 
-    for (var i = -10; i < 11; i++) {
+    for (var i = -20; i < 21; i++) {
       grid[i] = {};
 
-      for (var j = -10; j < 11; j++) {
+      for (var j = -20; j < 21; j++) {
        Game.addTile(i, j, state, setState);
       }
     }
@@ -58,7 +58,7 @@ var Game = {
     var tileY = y * sq;
     var tileFrame = Math.floor(Math.random() * 7);
 
-    if (tileFrame === 0 && Math.random() < 0.5) {
+    if (tileFrame === 0 && Math.random() < 0.7) {
       tileFrame++;
     }
 

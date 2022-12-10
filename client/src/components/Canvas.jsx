@@ -2,22 +2,22 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 
-import Entity from './entities/Entity.js';
-
 var tick = 0;
-var timeout;
+var updates = 0;
+var renderTimeout;
+var updateTimeout;
 
-var Canvas = function(props) {
+var Canvas = function({state, setState, canvasRef}) {
   // draw clears canvas, then renders and updates each entity and tile, according to camera offset.
   var draw = function(ctx, tick) {
-    if (!props.state.camera) {
+    if (!state.camera) {
       return;
     }
 
-    var camera   = props.state.camera;
-    var tiles    = props.state.tiles;
-    var entities = props.state.entities;
-    var uis      = props.state.uis;
+    var camera   = state.camera;
+    var tiles    = state.tiles;
+    var entities = state.entities;
+    var uis      = state.uis;
 
     var offX = camera.x - (ctx.canvas.width/2);
     var offY = camera.y - (ctx.canvas.height/2);
@@ -36,13 +36,13 @@ var Canvas = function(props) {
     entities.forEach(function(ent) {
       if (ent.nearCamera(camera)) {
         ent.render(ctx, camera, tick);
-        ent.update(props.state, props.setState);
+        ent.update(state, setState);
       }
     });
 
     uis.forEach(function(ui) {
       if (ui.nearCamera(camera)) {
-        if (props.state.visibleUI) {
+        if (state.visibleUI) {
           ui.render(ctx, camera, tick);
         }
         ui.update();
@@ -54,17 +54,17 @@ var Canvas = function(props) {
 
   // renderCanvas increments tick, calls draw, and renders according to state.fps.
   var renderCanvas = function() {
-    const ctx = props.canvasRef.current.getContext('2d');
+    const ctx = canvasRef.current.getContext('2d');
 
     var animId;
     var render = function() {
-      clearTimeout(timeout);
+      clearTimeout(renderTimeout);
       tick++;
       draw(ctx, tick);
 
-      timeout = setTimeout(function() {
+      renderTimeout = setTimeout(function() {
         animId = window.requestAnimationFrame(render);
-      }, 1000/props.state.fps);
+      }, 1000/state.fps);
     };
 
     render();
@@ -74,10 +74,10 @@ var Canvas = function(props) {
     };
   };
 
-  useEffect(renderCanvas, [draw]);
+  useEffect(renderCanvas, [tick]);
 
   return (
-    <canvas ref={props.canvasRef} className='canvas' width='1280' height='720' />
+    <canvas ref={canvasRef} className='canvas' width='1280' height='720' />
   )
 };
 

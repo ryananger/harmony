@@ -3,6 +3,8 @@ var idCount = 0;
 var Entity = function(x, y, actions) {
   const entity = {
     id: idCount++,
+    isEntity: true,
+
     x: x,
     y: y,
     cx: Math.floor(x/72),
@@ -188,7 +190,7 @@ var Entity = function(x, y, actions) {
         })
       }
     },
-    update: function(state, setState) {
+    update: function(state) {
       entity.x = Math.ceil(entity.x);
       entity.y = Math.ceil(entity.y);
 

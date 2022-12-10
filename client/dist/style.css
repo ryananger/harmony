@@ -32,11 +32,13 @@ h1 {
 }
 
 .v {
+  display: flex;
   flex-direction: column;
 }
 
 .h {
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
 }
 
 #app {
@@ -56,8 +58,9 @@ h1 {
 }
 
 .devLabel {
-  width: 300px;
-  justify-content: space-between;
+  min-width: 100px;
+  padding: 8px;
+  justify-content: center;
 }
 
 .canvas {
@@ -71,4 +74,8 @@ h1 {
 
   margin: 32px;
   flex-grow: 1 1 auto;
+}
+
+button {
+  outline: none;
 }

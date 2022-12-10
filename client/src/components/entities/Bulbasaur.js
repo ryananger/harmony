@@ -21,6 +21,8 @@ var Bulbasaur = function(x, y) {
   var hpImg =  hp.newImage(hpSrc, false, 18);
 
   sprite.animations = {
+    bump:      {start: 12, length: 1},
+
     walkDown:  {start: 0, length: 3},
     walkLeft:  {start: 3, length: 3},
     walkUp:    {start: 6, length: 3},
@@ -89,6 +91,12 @@ var Bulbasaur = function(x, y) {
 
   bulbasaur.actions.bump = function() {
     bulbasaur.idle = true;
+    bulbasaur.collisions.map(function(col) {
+      if (col.collision.isEntity) {
+        sprite.currentAnimation = 'bump';
+      }
+    })
+
     setTimeout(function() {
       bulbasaur.idle = false;
       bulbasaur.speed = bulbasaur.baseVel;

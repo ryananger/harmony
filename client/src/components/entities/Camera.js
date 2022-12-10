@@ -6,7 +6,7 @@ var Camera = function(x, y) {
   // camera.newImage(src, false, 32);
   camera.isCamera  = true;
   camera.isVisible = true;
-  camera.drag = 8;
+  camera.drag = 20;
 
   camera.follow = function(distance) {
     if (camera.following) {
