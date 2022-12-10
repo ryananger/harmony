@@ -10,9 +10,9 @@ var Entity = function(x, y, actions) {
     width: 0,
     height: 0,
 
-    speed: 5,
-    baseVel: 5,
-    maxVel: 10,
+    speed: 2,
+    baseVel: 2,
+    maxVel: 5,
     accel: 1,
 
     following: null,
@@ -22,7 +22,7 @@ var Entity = function(x, y, actions) {
     isVisible: true,
     collides: false,
     collisions: [],
-    repulsion: 1,
+    repulsion: 2,
 
     images: [],
     currentImage: 0,
@@ -59,13 +59,13 @@ var Entity = function(x, y, actions) {
       );
     },
     collisionCheck: function(x, y, entities, tiles) {
-      if (!entity.collides) {
+      if (!entity.collides || !entity.nearCamera) {
         return;
       }
 
       var collisions = [];
       var check = function(entry) {
-        if (!entry.solid) {
+        if (!entry.collides) {
           return;
         }
 
@@ -74,7 +74,8 @@ var Entity = function(x, y, actions) {
         var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
         if (dist <= entry.width/2) {
-          collisions.push(entry);
+
+          collisions.push({collision: entry, dist: dist, distX: distX, distY: distY});
         }
       };
 
@@ -157,20 +158,21 @@ var Entity = function(x, y, actions) {
         }
       }
     },
-    update: function(state, setState) {
-      entity.cx = Math.floor(entity.x/72);
-      entity.cy = Math.floor(entity.y/72);
+    repulse: function() {
+      if (entity.solid) {
+        entity.collisions.map(function(entry) {
+          var col = entry.collision;
 
-      if (entity.collisions.length > 0) {
-        if (entity.solid) {
-          entity.collisions.map(function(col) {
-            var cx = col.x;
-            var cy = col.y;
-            var ex1 = entity.x;
-            var ex2 = entity.x + entity.width;
-            var ey1 = entity.y;
-            var ey2 = entity.y + entity.height;
+          var cx = col.x;
+          var cy = col.y;
+          var ex1 = entity.x;
+          var ex2 = entity.x + entity.width;
+          var ey1 = entity.y;
+          var ey2 = entity.y + entity.height;
+          var distX = entry.distX;
+          var distY = entry.distY;
 
+          if (distX > distY) {
             if (cx > ex1) {
               entity.x -= entity.repulsion + col.repulsion;
             }
@@ -178,7 +180,7 @@ var Entity = function(x, y, actions) {
             if (cx < ex1) {
               entity.x += entity.repulsion + col.repulsion;
             }
-
+          } else {
             if (cy > ey1) {
               entity.y -= entity.repulsion + col.repulsion;
             }
@@ -186,8 +188,21 @@ var Entity = function(x, y, actions) {
             if (cy < ey1) {
               entity.y += entity.repulsion + col.repulsion;
             }
-          })
-        }
+          }
+        })
+      }
+    },
+    update: function(state, setState) {
+      entity.x = Math.ceil(entity.x);
+      entity.y = Math.ceil(entity.y);
+
+      entity.cx = Math.floor(entity.x/72);
+      entity.cy = Math.floor(entity.y/72);
+
+      entity.collisionCheck(entity.x, entity.y, state.entities, state.tiles);
+
+      if (entity.collisions.length > 0) {
+        entity.repulse();
       }
 
       // onTick updates should be defined in this function upon entity creation

@@ -8,12 +8,13 @@ import Game from './Game.js';
 var App = function(props) {
   const [state, setState] = useState({
     view: 'home',
-    fps: 24,
+    fps: 60,
     camera: null,
     cameras: [],
 
     player: null,
     entities: [],
+
     tiles: [],
     tilesize: 72,
     grid: {}

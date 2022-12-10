@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Entity from './entities/Entity.js';
 import Bulbasaur from './entities/Bulbasaur.js';
 import Player from './entities/Player.js';
@@ -27,9 +27,17 @@ var Dev = function(props) {
     })
   };
 
-  var spawnBulbasaur = function() {
-    var x = -640 + Math.floor(Math.random() * 1280);
-    var y = -360 + Math.floor(Math.random() * 720);
+  var spawnBulbasaur = function(many) {
+    var w = 1280;
+    var h = 720;
+
+    if (many === true) {
+      w *= 10;
+      h *= 10;
+    }
+
+    var x = -w/2 + Math.floor(Math.random() * w);
+    var y = -h/2 + Math.floor(Math.random() * h);
 
     var bulbasaur = Bulbasaur(x, y);
     var entities = props.state.entities;
@@ -47,7 +55,13 @@ var Dev = function(props) {
     for (var i = 0; i < 100; i++) {
       spawnBulbasaur();
     }
-  }
+  };
+
+  var spawn1000 = function() {
+    for (var i = 0; i < 1000; i++) {
+      spawnBulbasaur(true);
+    }
+  };
 
   var clearEntities = function() {
     props.setState({
@@ -55,14 +69,6 @@ var Dev = function(props) {
       player: null,
       entities: [props.state.camera]
     })
-  };
-
-  var logState = function() {
-    console.log(props.state);
-  };
-
-  var logEntities = function() {
-    console.log(props.state.entities);
   };
 
   var followPlayer = function() {
@@ -79,6 +85,14 @@ var Dev = function(props) {
     })
   };
 
+  var logState = function() {
+    console.log(props.state);
+  };
+
+  var logEntities = function() {
+    console.log(props.state.entities);
+  };
+
   return (
     <div className="header flex h">
       <div className="devInfo v">
@@ -89,6 +103,7 @@ var Dev = function(props) {
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Spawn Player.           </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Spawn Bulbasaur.        </button>
         <button id="spawn100"      onClick={spawn100}>        Spawn 100 Bulbasauri.   </button>
+        <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000 Bulbasauri.  </button>
         <button id="followPlayer"  onClick={followPlayer}>    Follow Player.          </button>
         <button id="logState"      onClick={logState}>        Log state.              </button>
         <button id="logEntities"   onClick={logEntities}>     Log entities.           </button>

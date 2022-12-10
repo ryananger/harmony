@@ -4,7 +4,8 @@ var Tile = function(src, x, y, sq, frame) {
   const tile = {
     id: idCount++,
     solid: false,
-    repulsion: 4,
+    collides: false,
+    repulsion: 5,
     next: null,
     x: x,
     y: y,
@@ -25,21 +26,19 @@ var Tile = function(src, x, y, sq, frame) {
     frame: frame,
     nearCamera: function(cam) {
       return (
-        tile.x > cam.x - 3000 &&
-        tile.x < cam.x + 3000 &&
-        tile.y > cam.y - 3000 &&
-        tile.y < cam.y + 3000
+        tile.x > cam.x - 1500 &&
+        tile.x < cam.x + 1500 &&
+        tile.y > cam.y - 1500 &&
+        tile.y < cam.y + 1500
       );
     },
     render: function(ctx, cam) {
-      if (tile.nearCamera(cam)) {
-        var frame = tile.frame;
-        var sq = tile.sq;
+      var frame = tile.frame;
+      var sq = tile.sq;
 
-        ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x - (sq/2), tile.y - (sq/2), sq, sq);
+      ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x - (sq/2), tile.y - (sq/2), sq, sq);
 
-        return true;
-      }
+      return true;
     },
     update: function() {
       // onTick updates should be defined in this function upon tile creation

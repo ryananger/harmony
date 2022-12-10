@@ -8,37 +8,41 @@ var tick = 0;
 var timeout;
 
 var Canvas = function(props) {
-  // draw clears canvas, renders each entity, and then updates each entity.
+  // draw clears canvas, then renders and updates each entity and tile, according to camera offset.
   var draw = function(ctx, tick) {
     if (!props.state.camera) {
       return;
     }
 
-    var camera = props.state.camera;
-    var tiles = props.state.tiles;
+    var camera   = props.state.camera;
+    var tiles    = props.state.tiles;
     var entities = props.state.entities;
 
-    var offX = props.state.camera.x - (ctx.canvas.width/2);
-    var offY = props.state.camera.y - (ctx.canvas.height/2);
+    var offX = camera.x - (ctx.canvas.width/2);
+    var offY = camera.y - (ctx.canvas.height/2);
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.save();
     ctx.translate(-offX, -offY);
 
     tiles.forEach(function(tile) {
-      tile.render(ctx, camera);
-      tile.update();
+      if (tile.nearCamera(camera)) {
+        tile.render(ctx, camera);
+        tile.update();
+      }
     });
 
     entities.forEach(function(ent) {
-      ent.render(ctx, camera, tick);
-      ent.collisionCheck(ent.x, ent.y, entities, tiles);
-      ent.update(props.state, props.setState);
+      if (ent.nearCamera(camera)) {
+        ent.render(ctx, camera, tick);
+        ent.update(props.state, props.setState);
+      }
     });
 
     ctx.restore();
   };
 
+  // renderCanvas increments tick, calls draw, and renders according to state.fps.
   var renderCanvas = function() {
     const ctx = props.canvasRef.current.getContext('2d');
 

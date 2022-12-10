@@ -4,7 +4,7 @@ var Camera = function(x, y) {
   var camera = Entity(x, y);
   // var src = '../../public/camera.png';
   // camera.newImage(src, false, 32);
-  camera.isCamera = true;
+  camera.isCamera  = true;
   camera.isVisible = true;
   camera.drag = 8;
 
@@ -12,11 +12,11 @@ var Camera = function(x, y) {
     if (camera.following) {
       var distX = Math.abs(camera.x - camera.following.x);
       var distY = Math.abs(camera.y - camera.following.y);
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
+      var dist  = Math.sqrt((distX ** 2) + (distY ** 2));
 
       if (dist > distance) {
-        var stepX = Math.floor(distX/camera.drag);
-        var stepY = Math.floor(distY/camera.drag);
+        var stepX = Math.ceil(distX/camera.drag);
+        var stepY = Math.ceil(distY/camera.drag);
 
         if (camera.x > camera.following.x) {
           camera.x -= stepX;

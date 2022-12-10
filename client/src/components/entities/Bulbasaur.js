@@ -3,7 +3,7 @@ import Entity from './Entity.js';
 var Bulbasaur = function(x, y) {
   var bulbasaur = Entity(x, y);
   bulbasaur.baseVel = 1;
-  bulbasaur.maxVel = 5;
+  bulbasaur.maxVel = 2;
   bulbasaur.collides = true;
   bulbasaur.solid = true;
   bulbasaur.drag = 20;
@@ -18,7 +18,7 @@ var Bulbasaur = function(x, y) {
     walkRight: {start: 9, length: 3}
   };
 
-  sprite.frameDuration = 4;
+  sprite.frameDuration = 8;
   sprite.currentAnimation = 'walkDown';
 
   bulbasaur.getDirection = function() {
@@ -34,7 +34,7 @@ var Bulbasaur = function(x, y) {
   bulbasaur.getDirection();
 
   bulbasaur.actions.walk = function(state) {
-    if (Math.random() < 0.05) {
+    if (Math.random() < 0.01) {
       bulbasaur.getDirection();
     }
 
@@ -86,6 +86,12 @@ var Bulbasaur = function(x, y) {
       bulbasaur.getDirection();
     }, 1000);
   };
+
+  var repulse = bulbasaur.repulse;
+  bulbasaur.repulse = function() {
+    repulse();
+    bulbasaur.actions.bump();
+  }
 
   var update = bulbasaur.update;
   bulbasaur.update = function(state, setState) {

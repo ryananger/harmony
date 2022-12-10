@@ -22,7 +22,7 @@ var Player = function(x, y) {
     walkRight: {start: 9, length: 3}
   };
 
-  sprite.frameDuration = 4;
+  sprite.frameDuration = 8;
   sprite.currentAnimation = 'idle';
 
   player.actions.walk = function() {
