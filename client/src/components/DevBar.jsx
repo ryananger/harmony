@@ -93,20 +93,8 @@ var Dev = function({Game}) {
     }
   };
 
-  var playerCoordinates = function() {
-    if (state.player) {
-      var x = state.player.x;
-      var y = state.player.y;
-
-      return `(${x}, ${y})`;
-    } else {
-      return 'No Player.'
-    }
-  };
-
   return (
     <div className="header flex v">
-      {playerCoordinates()}
       <div className="devInfo h">
         <div className="devLabel h"><b>View:&nbsp;</b>        {`${Game.view}`}</div>
         <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${Game.entities.length}`}</div>
