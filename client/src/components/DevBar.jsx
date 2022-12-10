@@ -1,7 +1,7 @@
 import React from 'react';
-import Entity from './entities/Entity.js';
-import Bulbasaur from './entities/Bulbasaur.js';
-import Player from './entities/Player.js';
+import Entity from './Game/Entity.js';
+import Bulbasaur from './Game/Bulbasaur.js';
+import Player from './Game/Player.js';
 
 var Dev = function({Game}) {
   var spawnPlayer = function() {

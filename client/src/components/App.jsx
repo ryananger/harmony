@@ -3,7 +3,7 @@ import {useEffect, useState, useRef} from 'react';
 
 import Canvas from './Canvas.jsx';
 import Dev from './DevBar.jsx';
-import Game from './Game.js';
+import Game from './Game/Game.js';
 
 var App = function() {
   const [tick, updateReact] = useState(0);

@@ -1,5 +1,5 @@
-import Tile from './entities/Tile.js';
-import Camera from './entities/Camera.js';
+import Tile from './Tile.js';
+import Camera from './Camera.js';
 
 var Game = {
   view: 'home',

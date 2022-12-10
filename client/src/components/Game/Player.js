@@ -1,5 +1,5 @@
 import Entity from './Entity.js';
-import Game from '../Game.js';
+import Game from './Game.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
