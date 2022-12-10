@@ -81,7 +81,7 @@ var Dev = function({state, setState}) {
       }
 
       if (!ent.following) {
-        ent.following = player;
+        ent.following = state.player;
       } else {
         ent.following = null;
       }
@@ -103,15 +103,27 @@ var Dev = function({state, setState}) {
   };
 
   var logState = function() {
-    console.log(state);
+    console.table(state.player.x, state.player.y);
   };
 
   var logEntities = function() {
     console.log(state.entities);
   };
 
+  var playerCoordinates = function() {
+    if (state.player) {
+      var x = state.player.x;
+      var y = state.player.y;
+
+      return `(${x}, ${y})`;
+    } else {
+      return 'No Player.'
+    }
+  };
+
   return (
     <div className="header flex v">
+      {playerCoordinates()}
       <div className="devInfo h">
         <div className="devLabel h"><b>View:&nbsp;</b>        {`${state.view}`}</div>
         <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${state.entities.length}`}</div>

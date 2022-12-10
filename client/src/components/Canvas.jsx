@@ -3,11 +3,9 @@ import {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 
 var tick = 0;
-var updates = 0;
 var renderTimeout;
-var updateTimeout;
 
-var Canvas = function({state, setState, canvasRef}) {
+var Canvas = function({state, setState, setUpdate, canvasRef}) {
   // draw clears canvas, then renders and updates each entity and tile, according to camera offset.
   var draw = function(ctx, tick) {
     if (!state.camera) {

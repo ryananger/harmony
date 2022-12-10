@@ -2,6 +2,12 @@ import Tile from './entities/Tile.js';
 import Camera from './entities/Camera.js';
 
 var Game = {
+  num: 0,
+  numInc: function() {
+    setInterval(function() {
+      Game.num++
+    }, 1000);
+  }(),
   initTiles: function(state, setState) {
     var grid  = state.grid;
     var tiles = state.tiles;
