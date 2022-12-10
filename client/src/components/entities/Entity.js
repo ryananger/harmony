@@ -190,14 +190,14 @@ var Entity = function(x, y, actions) {
         })
       }
     },
-    update: function(state) {
+    update: function(Game) {
       entity.x = Math.ceil(entity.x);
       entity.y = Math.ceil(entity.y);
 
       entity.cx = Math.floor(entity.x/72);
       entity.cy = Math.floor(entity.y/72);
 
-      entity.collisionCheck(entity.x, entity.y, state.entities, state.tiles);
+      entity.collisionCheck(entity.x, entity.y, Game.entities, Game.tiles);
 
       if (entity.collisions.length > 0) {
         entity.repulse();

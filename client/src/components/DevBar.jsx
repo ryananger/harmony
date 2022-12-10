@@ -1,30 +1,20 @@
 import React from 'react';
-import {useState} from 'react';
 import Entity from './entities/Entity.js';
 import Bulbasaur from './entities/Bulbasaur.js';
 import Player from './entities/Player.js';
 
-var Dev = function({state, setState}) {
+var Dev = function({Game}) {
   var spawnPlayer = function() {
-    if (state.player) {
+    if (Game.player) {
       return;
     }
 
     var p = Player(0, 0);
-    var cam = state.camera;
-    var entities = state.entities;
+    var cam = Game.camera;
 
+    Game.player = p;
+    Game.entities.unshift(p);
     cam.following = p;
-
-    setState({
-      ...state,
-      camera: cam,
-      player: p,
-      entities: function() {
-        entities.unshift(p);
-        return entities;
-      }()
-    })
   };
 
   var spawnBulbasaur = function(many) {
@@ -40,17 +30,11 @@ var Dev = function({state, setState}) {
     var y = -h/2 + Math.floor(Math.random() * h);
 
     var bulbasaur = Bulbasaur(x, y);
-    var entities = state.entities;
-    var uis = state.uis;
+    var entities = Game.entities;
+    var uis = Game.uis;
 
     entities.unshift(bulbasaur);
     uis.unshift(bulbasaur.healthBar);
-
-    setState({
-      ...state,
-      entities: entities,
-      uis: uis
-    })
   };
 
   var spawn100 = function() {
@@ -66,22 +50,19 @@ var Dev = function({state, setState}) {
   };
 
   var clearEntities = function() {
-    setState({
-      ...state,
-      player: null,
-      entities: [state.camera],
-      uis: []
-    })
+    Game.player = null;
+    Game.entities = [Game.camera];
+    Game.uis = [];
   };
 
   var followPlayer = function() {
-    state.entities.map(function(ent) {
+    Game.entities.map(function(ent) {
       if (ent.isCamera || ent.isPlayer) {
         return;
       }
 
       if (!ent.following) {
-        ent.following = state.player;
+        ent.following = Game.player;
       } else {
         ent.following = null;
       }
@@ -89,25 +70,27 @@ var Dev = function({state, setState}) {
   };
 
   var toggleUI = function() {
-    if (state.visibleUI) {
-      setState({
-        ...state,
-        visibleUI: false
-      });
+    if (Game.visibleUI) {
+      Game.visibleUI = false;
     } else {
-      setState({
-        ...state,
-        visibleUI: true
-      });
+      Game.visibleUI = true;
     }
   };
 
   var logState = function() {
-    console.table(state.player.x, state.player.y);
+    console.log(Game);
   };
 
   var logEntities = function() {
-    console.log(state.entities);
+    console.log(Game.entities);
+  };
+
+  var playerCoordinates = function() {
+    if (!Game.player) {
+      return 'No player';
+    } else {
+      return `(${Game.player.x}, ${Game.player.y})`;
+    }
   };
 
   var playerCoordinates = function() {
@@ -125,8 +108,9 @@ var Dev = function({state, setState}) {
     <div className="header flex v">
       {playerCoordinates()}
       <div className="devInfo h">
-        <div className="devLabel h"><b>View:&nbsp;</b>        {`${state.view}`}</div>
-        <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${state.entities.length}`}</div>
+        <div className="devLabel h"><b>View:&nbsp;</b>        {`${Game.view}`}</div>
+        <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${Game.entities.length}`}</div>
+        <div className="devLabel h"><b>Player:&nbsp;</b>      {playerCoordinates()}</div>
       </div>
       <div id="devButtons">
         <button id="toggleUI"      onClick={toggleUI}>        UI.                     </button>
