@@ -21,6 +21,10 @@ body, #root, #main {
   background-color: rgb(145, 189, 115);
 }
 
+#main {
+  position: relative;
+}
+
 h1 {
   user-select: none;
   margin: 0;
@@ -49,8 +53,15 @@ h1 {
   align-items: stretch;
 }
 
-.header {
+.devBar {
+  position: absolute;
+  top: 100px;
+  width: 370px;
   height: 100px;
+  font-size: 12px;
+  padding: 12px;
+  padding-top: 22px;
+  z-index: 2;
 }
 
 .devInfo {
@@ -58,24 +69,37 @@ h1 {
 }
 
 .devLabel {
-  min-width: 100px;
   padding: 8px;
   justify-content: center;
 }
 
+.ui {
+  position: absolute;
+  top: 100px;
+  width: 392px;
+  height: 360px;
+  z-index: 1;
+
+  background-image: url('./public/ui1.png');
+}
+
 .canvas {
-  background-color: rgb(187, 206, 136);
+  background-color: #bbce88;
 
   border-width: 1px;
   border-style: solid;
   border-color: black;
 
   box-sizing: content-box;
+  position: absolute;
+  top: 100px;
 
-  margin: 32px;
   flex-grow: 1 1 auto;
 }
 
 button {
+  background-color: #e9d8bf;
+  border: 1px solid #855945;
+  font-size: 12px;
   outline: none;
 }

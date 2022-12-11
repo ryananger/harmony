@@ -94,14 +94,14 @@ var Dev = function({Game}) {
   };
 
   return (
-    <div className="header flex v">
+    <div className="devBar flex v">
       <div className="devInfo h">
         <div className="devLabel h"><b>View:&nbsp;</b>        {`${Game.view}`}</div>
         <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${Game.entities.length}`}</div>
         <div className="devLabel h"><b>Player:&nbsp;</b>      {playerCoordinates()}</div>
       </div>
       <div id="devButtons">
-        <button id="toggleUI"      onClick={toggleUI}>        UI.                     </button>
+        <button id="toggleUI"      onClick={toggleUI}>        Toggle UI.              </button>
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Player.                 </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Bulbasaur.              </button>
         <button id="spawn100"      onClick={spawn100}>        Spawn 100.              </button>
