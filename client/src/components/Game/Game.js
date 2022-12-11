@@ -6,7 +6,7 @@ var renderTimeout;
 
 var Game = {
   view: 'home',
-  fps: 60,
+  fps: 120,
 
   camera: null,
   player: null,
@@ -133,5 +133,7 @@ var Game = {
 
 Game.initTiles();
 Game.newCamera(0, 0);
+
+window.Game = Game;
 
 export default Game;

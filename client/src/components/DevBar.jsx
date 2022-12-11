@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Entity from './Game/Entity.js';
 import Bulbasaur from './Game/Bulbasaur.js';
 import Player from './Game/Player.js';
@@ -94,13 +95,13 @@ var Dev = function({Game}) {
   };
 
   return (
-    <div className="devBar flex v">
-      <div className="devInfo h">
+    <div className="devBar flex v float">
+      <div className="devInfo v">
         <div className="devLabel h"><b>View:&nbsp;</b>        {`${Game.view}`}</div>
         <div className="devLabel h"><b># Entities:&nbsp;</b>  {`${Game.entities.length}`}</div>
         <div className="devLabel h"><b>Player:&nbsp;</b>      {playerCoordinates()}</div>
       </div>
-      <div id="devButtons">
+      <div className="devButtons v">
         <button id="toggleUI"      onClick={toggleUI}>        Toggle UI.              </button>
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Player.                 </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Bulbasaur.              </button>

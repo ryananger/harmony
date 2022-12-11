@@ -1,9 +1,8 @@
 import React from 'react';
 
 var UI = function({Game}) {
-
   return (
-    <div className="ui"></div>
+    <div className="ui float"></div>
   )
 }
 
