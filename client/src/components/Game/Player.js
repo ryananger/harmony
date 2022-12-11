@@ -1,5 +1,6 @@
 import Entity from './Entity.js';
 import Game from './Game.js';
+import input from './input.js';
 
 var Player = function(x, y) {
   var player = Entity(x, y);
@@ -11,7 +12,6 @@ var Player = function(x, y) {
 
   var src = '../../public/playersprite.png';
   var sprite = player.newImage(src, true, 72);
-  var keysPressed = [];
 
   sprite.animations = {
     idle:      {start: 0, length: 1},
@@ -32,11 +32,11 @@ var Player = function(x, y) {
 
     var speed = player.speed;
 
-    if(keysPressed.length >= 2) {
+    if(input.keysPressed.length >= 2) {
       speed = Math.floor(speed/2);
     }
 
-    keysPressed.map(function(key) {
+    input.keysPressed.map(function(key) {
       switch (key) {
         case 'w':
           player.y -= speed;
@@ -62,7 +62,7 @@ var Player = function(x, y) {
   player.update = function(Game) {
     Game.tileGen(player);
 
-    if (keysPressed.length > 0) {
+    if (input.keysPressed.length > 0) {
       player.actions.walk();
     } else {
       if (sprite.currentAnimation != 'idle') {
@@ -76,26 +76,6 @@ var Player = function(x, y) {
 
     update(Game);
   }
-
-  window.addEventListener('keydown', function (event) {
-    if (keysPressed.indexOf(event.key) === -1 && event.key.match(/[wasd]/)) {
-      keysPressed.unshift(event.key);
-    };
-  });
-
-  window.addEventListener('keyup', function (event) {
-    var copy = [];
-
-    keysPressed.map(function(key) {
-      if (key === event.key) {
-        return;
-      }
-
-      copy.push(key);
-    })
-
-    keysPressed = copy;
-  });
 
   return player;
 };

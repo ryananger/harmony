@@ -2,6 +2,7 @@ import React from 'react';
 
 import Entity from './Game/Entity.js';
 import Bulbasaur from './Game/Bulbasaur.js';
+import Charmander from './Game/Charmander.js';
 import Player from './Game/Player.js';
 
 var Dev = function({Game}) {
@@ -18,17 +19,18 @@ var Dev = function({Game}) {
     cam.following = p;
   };
 
-  var spawnBulbasaur = function(many) {
-    var w = 1280;
-    var h = 720;
-
-    if (many === true) {
-      w *= 10;
-      h *= 10;
-    }
+  var spawnBulbasaur = function() {
+    var w = 2000;
+    var h = 2000;
 
     var x = -w/2 + Math.floor(Math.random() * w);
     var y = -h/2 + Math.floor(Math.random() * h);
+
+
+    if (Game.camera) {
+      x += Game.camera.x;
+      y += Game.camera.y;
+    }
 
     var bulbasaur = Bulbasaur(x, y);
     var entities = Game.entities;
@@ -38,9 +40,34 @@ var Dev = function({Game}) {
     uis.unshift(bulbasaur.healthBar);
   };
 
+  var spawnCharmander = function() {
+    var w = 2000;
+    var h = 2000;
+
+    var x = -w/2 + Math.floor(Math.random() * w);
+    var y = -h/2 + Math.floor(Math.random() * h);
+
+
+    if (Game.camera) {
+      x += Game.camera.x;
+      y += Game.camera.y;
+    }
+
+    var charmander = Charmander(x, y);
+    var entities = Game.entities;
+    var uis = Game.uis;
+
+    entities.unshift(charmander);
+    uis.unshift(charmander.healthBar);
+  };
+
   var spawn100 = function() {
     for (var i = 0; i < 100; i++) {
-      spawnBulbasaur();
+      if (Math.random() < 0.05) {
+        spawnCharmander();
+      } else {
+        spawnBulbasaur();
+      }
     }
   };
 
@@ -105,8 +132,9 @@ var Dev = function({Game}) {
         <button id="toggleUI"      onClick={toggleUI}>        Toggle UI.              </button>
         <button id="spawnPlayer"   onClick={spawnPlayer}>     Player.                 </button>
         <button id="spawnEntity"   onClick={spawnBulbasaur}>  Bulbasaur.              </button>
+        <button id="spawnChar"     onClick={spawnCharmander}> Charmander.              </button>
         <button id="spawn100"      onClick={spawn100}>        Spawn 100.              </button>
-        <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000.             </button>
+        {/* <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000.             </button> */}
         <button id="followPlayer"  onClick={followPlayer}>    Follow.                 </button>
         <button id="logState"      onClick={logState}>        Log state.              </button>
         <button id="logEntities"   onClick={logEntities}>     Log entities.           </button>
