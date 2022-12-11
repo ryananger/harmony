@@ -113,6 +113,14 @@ var Dev = function({Game}) {
     console.log(Game.entities);
   };
 
+  var toggleBorders = function() {
+    if (Game.showBorders) {
+      Game.showBorders = false;
+    } else {
+      Game.showBorders = true;
+    }
+  };
+
   var playerCoordinates = function() {
     if (!Game.player) {
       return 'No player';
@@ -137,7 +145,8 @@ var Dev = function({Game}) {
         {/* <button id="spawn1000"     onClick={spawn1000}>       Spawn 1000.             </button> */}
         <button id="followPlayer"  onClick={followPlayer}>    Follow.                 </button>
         <button id="logState"      onClick={logState}>        Log state.              </button>
-        <button id="logEntities"   onClick={logEntities}>     Log entities.           </button>
+        <button id="showBorders"   onClick={toggleBorders}>   Borders.                </button>
+        {/* <button id="logEntities"   onClick={logEntities}>     Log entities.           </button> */}
         <button id="clearEntities" onClick={clearEntities}>   Clear entities.         </button>
       </div>
     </div>

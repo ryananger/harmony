@@ -20,6 +20,9 @@ var Game = {
   tilesize: 72,
   grid: {},
 
+  showBorders: true,
+  showBoxes: false,
+
   initTiles: function() {
     var grid  = Game.grid;
     var tiles = Game.tiles;

@@ -114,7 +114,7 @@ var UI = function(x, y, actions) {
       ui.y = Math.ceil(ui.y);
 
       if (ui.following) {
-        ui.follow(1);
+        ui.follow(0);
       }
 
       // onTick updates should be defined in this function upon entity creation

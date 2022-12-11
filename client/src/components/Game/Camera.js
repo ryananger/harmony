@@ -4,6 +4,7 @@ var Camera = function(x, y) {
   var camera = Entity(x, y);
   // var src = '../../public/camera.png';
   // camera.newImage(src, false, 32);
+  camera.width = 0;
   camera.isCamera  = true;
   camera.isVisible = true;
   camera.drag = 20;

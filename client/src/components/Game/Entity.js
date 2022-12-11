@@ -4,11 +4,17 @@ var Entity = function(x, y, actions) {
   const entity = {
     id: idCount++,
     isEntity: true,
+    isLive: true,
+    isProjectile: false,
+    lifespan: null,
+    timeout: null,
 
     x: x,
     y: y,
     cx: Math.floor(x/72),
     cy: Math.floor(x/72),
+    boxX: x,
+    boxY: y,
     width: 0,
     height: 0,
 
@@ -30,6 +36,7 @@ var Entity = function(x, y, actions) {
     images: [],
     currentImage: 0,
     actions: actions || {},
+    ignore: [],
     newImage: function(src, isAnimated, width, height, x, y) {
       var image = {
         element: new Image(),
@@ -68,7 +75,7 @@ var Entity = function(x, y, actions) {
 
       var collisions = [];
       var check = function(entry) {
-        if (!entry.collides) {
+        if (!entry.collides || entity.ignore.indexOf(entry) !== -1) {
           return;
         }
 
@@ -156,7 +163,7 @@ var Entity = function(x, y, actions) {
       }
     },
     draw: function(Game, ctx, cam, tick) {
-      if (entity.isVisible) {
+      if (entity.isVisible && entity.isLive) {
         var img = entity.images[entity.currentImage];
 
         if (!img) {
@@ -187,23 +194,59 @@ var Entity = function(x, y, actions) {
 
         ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x - (sq/2), entity.y - (sq/2), sq, sq);
 
+        if (Game.showBorders) {
+          ctx.strokeRect(entity.x - (sq/2), entity.y - (sq/2), sq, sq);
+        }
+
         return true;
       }
     },
     update: function(Game) {
-      entity.x = Math.ceil(entity.x);
-      entity.y = Math.ceil(entity.y);
+      if (entity.isLive) {
+        if (!entity.isProjectile) {
+          entity.x = Math.ceil(entity.x);
+          entity.y = Math.ceil(entity.y);
+        }
 
-      entity.cx = Math.floor(entity.x/72);
-      entity.cy = Math.floor(entity.y/72);
+        entity.cx = Math.floor(entity.x/72);
+        entity.cy = Math.floor(entity.y/72);
 
-      entity.collisionCheck(entity.x, entity.y, Game.entities, Game.tiles);
+        entity.collisionCheck(entity.x, entity.y, Game.entities, Game.tiles);
 
-      if (entity.collisions.length > 0) {
-        entity.repulse();
+        if (entity.collisions.length > 0) {
+          entity.repulse();
+        }
+
+        if (entity.lifespan && !entity.timeout) {
+          entity.timeout = setTimeout(entity.destroy, entity.lifespan * 1000);
+        }
+
+        // onTick updates should be defined in this function upon entity creation
       }
+    },
+    destroy: function() {
+      var entities = [];
 
-      // onTick updates should be defined in this function upon entity creation
+      Game.entities.map(function(ent) {
+        if (ent.id !== entity.id) {
+          entities.push(ent);
+        }
+      });
+
+      entity.isLive = false;
+      Game.entities = entities;
+    },
+
+    onClick: function(input) {
+      var ex = entity.x - entity.width/2;
+      var ey = entity.y - entity.width/2;
+      var mx = input.mx;
+      var my = input.my;
+
+      if (mx > ex && mx < ex + entity.width &&
+          my > ey && my < ey + entity.height) {
+          console.log('Clicked on entity: ', entity);
+      }
     }
   }
 

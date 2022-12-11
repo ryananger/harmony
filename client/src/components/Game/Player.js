@@ -1,5 +1,6 @@
 import Entity from './Entity.js';
 import Game from './Game.js';
+import Leaf from './Leaf.js';
 import input from './input.js';
 
 var Player = function(x, y) {
@@ -75,6 +76,19 @@ var Player = function(x, y) {
     }
 
     update(Game);
+  }
+
+  var onClick = player.onClick;
+  player.onClick = function() {
+    var diffX = input.mx - player.x;
+    var diffY = input.my - player.y;
+    var slope = diffX/diffY;
+
+    var leaf = Leaf(player.x, player.y);
+
+    leaf.slope = {val: slope, x: diffX, y: diffY};
+    player.ignore.push(leaf);
+    Game.entities.unshift(leaf);
   }
 
   return player;
