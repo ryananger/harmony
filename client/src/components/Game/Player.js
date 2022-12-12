@@ -11,6 +11,13 @@ var Player = function(x, y) {
   player.collides = true;
   player.solid = true;
 
+  player.box = {
+    x: -16,
+    y: -8,
+    w: 34,
+    h: 40
+  };
+
   var src = '../../public/playersprite.png';
   var sprite = player.newImage(src, true, 72);
 
@@ -85,10 +92,12 @@ var Player = function(x, y) {
     var slope = diffX/diffY;
 
     var leaf = Leaf(player.x, player.y);
-
     leaf.slope = {val: slope, x: diffX, y: diffY};
+    leaf.ignore = [player];
+
     player.ignore.push(leaf);
-    Game.entities.unshift(leaf);
+
+    Game.entities.push(leaf);
   }
 
   return player;

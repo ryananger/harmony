@@ -98,11 +98,7 @@ var Dev = function({Game}) {
   };
 
   var toggleUI = function() {
-    if (Game.visibleUI) {
-      Game.visibleUI = false;
-    } else {
-      Game.visibleUI = true;
-    }
+    Game.visibleUI = !Game.visibleUI;
   };
 
   var logState = function() {
@@ -114,12 +110,12 @@ var Dev = function({Game}) {
   };
 
   var toggleBorders = function() {
-    if (Game.showBorders) {
-      Game.showBorders = false;
-    } else {
-      Game.showBorders = true;
-    }
+    Game.showBorders = !Game.showBorders;
   };
+
+  var toggleBoxes = function() {
+    Game.showBoxes = !Game.showBoxes;
+  }
 
   var playerCoordinates = function() {
     if (!Game.player) {
@@ -146,6 +142,7 @@ var Dev = function({Game}) {
         <button id="followPlayer"  onClick={followPlayer}>    Follow.                 </button>
         <button id="logState"      onClick={logState}>        Log state.              </button>
         <button id="showBorders"   onClick={toggleBorders}>   Borders.                </button>
+        <button id="showBoxes"     onClick={toggleBoxes}>     Boxes.                  </button>
         {/* <button id="logEntities"   onClick={logEntities}>     Log entities.           </button> */}
         <button id="clearEntities" onClick={clearEntities}>   Clear entities.         </button>
       </div>

@@ -20,17 +20,17 @@ var Game = {
   tilesize: 72,
   grid: {},
 
-  showBorders: true,
+  showBorders: false,
   showBoxes: false,
 
   initTiles: function() {
     var grid  = Game.grid;
     var tiles = Game.tiles;
 
-    for (var i = -20; i < 21; i++) {
+    for (var i = -10; i <= 10; i++) {
       grid[i] = {};
 
-      for (var j = -20; j < 21; j++) {
+      for (var j = -10; j <= 10; j++) {
        Game.addTile(i, j);
       }
     }
@@ -71,6 +71,7 @@ var Game = {
     if (tileFrame === 0) {
       tile.solid = true;
       tile.collides = true;
+      tile.box = {x: -24, y: -14, w: 48, h: 40};
     }
 
     Game.grid[x][y] = tile;

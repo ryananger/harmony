@@ -9,6 +9,13 @@ var Bulbasaur = function(x, y) {
   bulbasaur.solid = true;
   bulbasaur.drag = 20;
 
+  bulbasaur.box = {
+    x: -16,
+    y: -8,
+    w: 34,
+    h: 40
+  };
+
   var hp = UI(x, y);
   bulbasaur.healthBar = hp;
   hp.following = bulbasaur;

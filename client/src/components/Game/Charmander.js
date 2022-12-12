@@ -9,6 +9,13 @@ var Charmander = function(x, y) {
   charmander.solid = true;
   charmander.drag = 20;
 
+  charmander.box = {
+    x: -16,
+    y: -10,
+    w: 32,
+    h: 40
+  };
+
   var hp = UI(x, y);
   charmander.healthBar = hp;
   hp.following = charmander;

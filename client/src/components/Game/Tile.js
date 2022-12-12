@@ -13,6 +13,7 @@ var Tile = function(src, x, y, sq, frame) {
     y: y,
     cx: x/sq,
     cy: y/sq,
+    box: {x: 0, y: 0, w: 0, h: 0},
 
     sq: sq,
     width: sq,
@@ -40,6 +41,12 @@ var Tile = function(src, x, y, sq, frame) {
       var sq = tile.sq;
 
       ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x - (sq/2), tile.y - (sq/2), sq, sq);
+
+      if (Game.showBoxes) {
+        var box = tile.box;
+
+        ctx.strokeRect(tile.x + box.x, tile.y + box.y, box.w, box.h);
+      }
 
       return true;
     },

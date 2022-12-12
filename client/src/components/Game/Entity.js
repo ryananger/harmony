@@ -13,8 +13,7 @@ var Entity = function(x, y, actions) {
     y: y,
     cx: Math.floor(x/72),
     cy: Math.floor(x/72),
-    boxX: x,
-    boxY: y,
+    box: {x: 0, y: 0, w: 0, h: 0},
     width: 0,
     height: 0,
 
@@ -83,8 +82,28 @@ var Entity = function(x, y, actions) {
         var distY = Math.abs((entity.y + (entity.height/2)) - (entry.y + (entry.height/2)));
         var dist = Math.sqrt((distX ** 2) + (distY ** 2));
 
-        if (dist <= entry.width/2) {
-          collisions.push({collision: entry, dist: dist, distX: distX, distY: distY});
+        if (dist > entity.width*2) {
+          return;
+        }
+
+        var box1 = {
+          ...entity.box,
+          x: x + entity.box.x,
+          y: y + entity.box.y
+        };
+
+        var box2 = {
+          ...entry.box,
+          x: entry.x + entry.box.x,
+          y: entry.y + entry.box.y
+        };
+
+        if (box1.x < box2.x + box2.w &&
+            box1.x + box1.w > box2.x &&
+            box1.y < box2.y + box2.h &&
+            box1.y + box1.h > box2.y) {
+
+            collisions.push({collision: entry, box1: box1, box2: box2});
         }
       };
 
@@ -135,28 +154,30 @@ var Entity = function(x, y, actions) {
     repulse: function() {
       if (entity.solid) {
         entity.collisions.map(function(entry) {
-          var col = entry.collision;
+          if (entry.collision.solid) {
+            var col = entry.collision;
 
-          var cx = col.x;
-          var cy = col.y;
-          var ex1 = entity.x;
-          var ex2 = entity.x + entity.width;
-          var ey1 = entity.y;
-          var ey2 = entity.y + entity.height;
-          var distX = entry.distX;
-          var distY = entry.distY;
+            var cx = col.x;
+            var cy = col.y;
+            var ex1 = entity.x;
+            var ex2 = entity.x + entity.width;
+            var ey1 = entity.y;
+            var ey2 = entity.y + entity.height;
+            var distX = entry.distX;
+            var distY = entry.distY;
 
-          if (distX > distY) {
-            if (cx > ex1) {
-              entity.x -= entity.repulsion + col.repulsion;
+            if (distX > distY) {
+              if (cx > ex1) {
+                entity.x -= entity.repulsion + col.repulsion;
+              } else {
+                entity.x += entity.repulsion + col.repulsion;
+              }
             } else {
-              entity.x += entity.repulsion + col.repulsion;
-            }
-          } else {
-            if (cy > ey1) {
-              entity.y -= entity.repulsion + col.repulsion;
-            } else{
-              entity.y += entity.repulsion + col.repulsion;
+              if (cy > ey1) {
+                entity.y -= entity.repulsion + col.repulsion;
+              } else{
+                entity.y += entity.repulsion + col.repulsion;
+              }
             }
           }
         })
@@ -173,6 +194,16 @@ var Entity = function(x, y, actions) {
         var sq = img.width;
         var frame;
         var cur = img.currentAnimation;
+
+        if (Game.showBorders) {
+          ctx.strokeRect(entity.x - (sq/2), entity.y - (sq/2), sq, sq);
+        }
+
+        if (Game.showBoxes) {
+          var box = entity.box;
+
+          ctx.strokeRect(entity.x + box.x, entity.y + box.y, box.w, box.h);
+        }
 
         if (img.animated) {
           if (!entity.idle) {
@@ -194,10 +225,6 @@ var Entity = function(x, y, actions) {
 
         ctx.drawImage(img.element, frame * sq, 0, sq, sq, entity.x - (sq/2), entity.y - (sq/2), sq, sq);
 
-        if (Game.showBorders) {
-          ctx.strokeRect(entity.x - (sq/2), entity.y - (sq/2), sq, sq);
-        }
-
         return true;
       }
     },
@@ -214,7 +241,7 @@ var Entity = function(x, y, actions) {
         entity.collisionCheck(entity.x, entity.y, Game.entities, Game.tiles);
 
         if (entity.collisions.length > 0) {
-          entity.repulse();
+          // entity.repulse();
         }
 
         if (entity.lifespan && !entity.timeout) {
