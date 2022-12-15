@@ -6,7 +6,7 @@ var renderTimeout;
 
 var Game = {
   view: 'home',
-  fps: 120,
+  fps: 80,
 
   camera: null,
   player: null,

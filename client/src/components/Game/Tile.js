@@ -30,11 +30,15 @@ var Tile = function(src, x, y, sq, frame) {
     }(),
     nearCamera: function(cam) {
       return (
-        tile.x > cam.x - 1500 &&
-        tile.x < cam.x + 1500 &&
-        tile.y > cam.y - 1500 &&
-        tile.y < cam.y + 1500
+        tile.getDistance(cam) < 800
       );
+    },
+    getDistance: function(entry) {
+      var distX = Math.abs((tile.x + (tile.width/2)) - (entry.x + (entry.width/2)));
+      var distY = Math.abs((tile.y + (tile.height/2)) - (entry.y + (entry.height/2)));
+      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
+
+      return dist;
     },
     draw: function(Game, ctx, cam) {
       var frame = tile.frame;
