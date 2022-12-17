@@ -122,6 +122,12 @@ var Entity = function(x, y, actions) {
       });
 
       entity.collisions = collisions;
+
+      if (collisions.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
     },
     follow: function(distance) {
       if (entity.following) {
