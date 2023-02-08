@@ -1,6 +1,8 @@
 var idCount = 0;
 
-var Tile = function(src, x, y, sq, frame) {
+var Tile = function(Game, x, y) {
+  const sq = Game.tilesize;
+
   const tile = {
     id: idCount++,
     next: null,
@@ -13,19 +15,21 @@ var Tile = function(src, x, y, sq, frame) {
     y: y,
     cx: x/sq,
     cy: y/sq,
-    box: {x: 0, y: 0, w: 0, h: 0},
+    box: {x: 4, y: 4, w: 56, h: 56},
 
     sq: sq,
     width: sq,
     height: sq,
-    frame: frame,
+    frame: function() {
+      return Math.random() < 0.1 ? Math.floor(Math.random() * 5) : 0;
+    }(),
     image: function() {
       var image = {
         element: new Image(),
         sq: sq
       };
 
-      image.element.src = src;
+      image.element.src = '../../public/tiles.png';
       return image;
     }(),
     nearCamera: function(cam) {
@@ -44,8 +48,7 @@ var Tile = function(src, x, y, sq, frame) {
       var frame = tile.frame;
       var sq = tile.sq;
 
-      ctx.fillStyle = '#45782e50';
-      ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x - (sq/2), tile.y - (sq/2), sq, sq);
+      ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x, tile.y, sq, sq);
 
       if (Game.showBoxes) {
         var box = tile.box;

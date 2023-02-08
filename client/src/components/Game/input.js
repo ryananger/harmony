@@ -39,6 +39,8 @@ var mouseClickListener = function() {
     getMousePosition(event);
     input.clicks++;
 
+    console.log(input);
+
     Game.entities.map(function(ent) {
       ent.onClick(input);
     })

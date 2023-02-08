@@ -2,6 +2,8 @@ import Tile from './Tile.js';
 import Cliff from './Cliff.js';
 import Camera from './Camera.js';
 
+import input from './input.js';
+
 var tick = 0;
 var renderTimeout;
 
@@ -30,7 +32,7 @@ var Game = {
     var grid  = Game.grid;
     var tiles = Game.tiles;
 
-    for (var i = -15; i <= 15; i++) {
+    for (var i = -20; i <= 20; i++) {
       grid[i] = {};
 
       if (i % 2 === 0) {
@@ -51,33 +53,27 @@ var Game = {
 
     for (var i = -half; i < half; i++) {
       var chkX = player.cx + i;
-      if (!grid.hasOwnProperty(chkX)) {
+      if (!grid[chkX]) {
         grid[chkX] = {};
       }
 
       for (var j = -half; j < half; j++) {
         var chkY = player.cy + j;
 
-        if (!grid[chkX].hasOwnProperty(chkY)) {
+        if (!grid[chkX][chkY]) {
           Game.addTile(chkX, chkY);
         }
       }
     }
   },
   addTile: function(x, y) {
-    var src = '../../public/tiles.png';
     var sq  = Game.tilesize;
     var tileX = x * sq;
     var tileY = y * sq;
-    var tileFrame = 0;
 
-    if (Math.random() < 0.1) {
-      tileFrame = Math.floor(Math.random() * 5);
-    }
+    var tile = Tile(Game, tileX, tileY);
 
-    var tile = Tile(src, tileX, tileY, sq, tileFrame);
-
-    Game.grid[x][y] = tile;
+    Game.grid[x][y] = {tile: tile};
     Game.tiles.unshift(tile);
   },
 
@@ -93,7 +89,7 @@ var Game = {
       return;
     }
 
-    var camera   = Game.camera;
+    var camera = Game.camera;
     var offX = camera.x - (ctx.canvas.width/2);
     var offY = camera.y - (ctx.canvas.height/2);
 
@@ -109,8 +105,8 @@ var Game = {
     ctx.translate(-offX, -offY);
 
     all.map(function(entry) {
-
       entry.draw(Game, ctx, camera, tick);
+
       if (entry.nearCamera(camera)) {
         entry.update(Game);
       }
@@ -127,9 +123,7 @@ var Game = {
       tick++;
       Game.update(ctx, tick);
 
-      renderTimeout = setTimeout(function() {
-        animId = window.requestAnimationFrame(render);
-      }, 1000/Game.fps);
+      animId = window.requestAnimationFrame(render);
     };
 
     render();

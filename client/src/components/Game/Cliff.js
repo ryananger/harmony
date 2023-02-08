@@ -9,7 +9,7 @@ var Cliff = function(x, y, sq) {
     y: y,
     cx: x/sq,
     cy: y/sq,
-    box: {x: -64, y: -32, w: 128, h: 64},
+    box: {x: 0, y: 0, w: 128, h: 64},
 
     sq: sq,
     width: sq*2,
@@ -41,7 +41,7 @@ var Cliff = function(x, y, sq) {
       var width = cliff.width;
       var height = cliff.height;
 
-      ctx.drawImage(cliff.image.element, frame * width, 0, width, height, cliff.x - (width/2), cliff.y - (height/2), width, height);
+      ctx.drawImage(cliff.image.element, frame * width, 0, width, height, cliff.x, cliff.y, width, height);
 
       if (Game.showBoxes) {
         var box = cliff.box;
@@ -53,6 +53,9 @@ var Cliff = function(x, y, sq) {
     },
     update: function(Game) {
       // onTick updates should be defined in this function upon cliff creation
+    },
+    onClick: function() {
+
     }
   }
 
