@@ -10,26 +10,20 @@ body, #root, #main, .play {
   flex: 1 1 auto;
   flex-direction: column;
 
-  margin: auto;
+  margin: 0;
+  padding: 0;
 
   height: 100%;
   width: 100%;
   min-width: 320px;
-  max-width: 1280px;
   text-align: center;
 
   background-color: rgb(145, 189, 115);
-  background: url('./public/bg1.png');
 }
 
 h1 {
   user-select: none;
   margin: 0;
-}
-
-.flex {
-  display: flex;
-  padding: 4px;
 }
 
 .v {
@@ -52,7 +46,6 @@ h1 {
 
 .play {
   position: relative;
-  margin-top: 64px;
 }
 
 .devBar {
@@ -85,26 +78,9 @@ h1 {
   width: 100px;
 }
 
-.ui {
-  width: 260px;
-  height: 316px;
-  z-index: 1;
-
-  user-select: none;
-  background-image: url('./public/ui1.png');
-}
-
 .canvas {
   background-color: #bbce88;
-
-  border-width: 1px;
-  border-style: solid;
-  border-color: black;
-
-  box-sizing: content-box;
-  width: 1280px;
-
-  flex-grow: 1 1 auto;
+  aspect-ratio: 16/9 auto;
 }
 
 button {

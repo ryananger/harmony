@@ -1,5 +1,5 @@
 {
-  "name": "oververse",
+  "name": "harmony",
   "version": "0.0.1",
   "description": "",
   "author": "Ry Scott",
@@ -10,7 +10,6 @@
     "dev": "webpack serve --open"
   },"dependencies": {
     "dotenv": "^10.0.0",
-    "eslint": "^8.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

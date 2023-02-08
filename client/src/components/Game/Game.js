@@ -1,4 +1,5 @@
 import Tile from './Tile.js';
+import Cliff from './Cliff.js';
 import Camera from './Camera.js';
 
 var tick = 0;
@@ -17,8 +18,10 @@ var Game = {
   uis:      [],
 
   tiles: [],
-  tilesize: 72,
+  tilesize: 64,
   grid: {},
+
+  bg: new Image(),
 
   showBorders: false,
   showBoxes: false,
@@ -27,10 +30,16 @@ var Game = {
     var grid  = Game.grid;
     var tiles = Game.tiles;
 
-    for (var i = -10; i <= 10; i++) {
+    for (var i = -15; i <= 15; i++) {
       grid[i] = {};
 
-      for (var j = -10; j <= 10; j++) {
+      if (i % 2 === 0) {
+        var cliff = Cliff(i*64, 0, 64);
+
+        Game.entities.unshift(cliff);
+      }
+
+      for (var j = -12; j <= 12; j++) {
        Game.addTile(i, j);
       }
     }
@@ -60,19 +69,13 @@ var Game = {
     var sq  = Game.tilesize;
     var tileX = x * sq;
     var tileY = y * sq;
-    var tileFrame = Math.floor(Math.random() * 7);
+    var tileFrame = 0;
 
-    if (tileFrame === 0 && Math.random() < 0.7) {
-      tileFrame++;
+    if (Math.random() < 0.1) {
+      tileFrame = Math.floor(Math.random() * 5);
     }
 
     var tile = Tile(src, tileX, tileY, sq, tileFrame);
-
-    if (tileFrame === 0) {
-      tile.solid = true;
-      tile.collides = true;
-      tile.box = {x: -24, y: -14, w: 48, h: 40};
-    }
 
     Game.grid[x][y] = tile;
     Game.tiles.unshift(tile);
@@ -101,13 +104,15 @@ var Game = {
     ];
 
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(Game.bg, -1600 + (ctx.canvas.width/2), -900 + (ctx.canvas.height/2));
     ctx.save();
     ctx.translate(-offX, -offY);
 
     all.map(function(entry) {
+
+      entry.draw(Game, ctx, camera, tick);
       if (entry.nearCamera(camera)) {
         entry.update(Game);
-        entry.draw(Game, ctx, camera, tick);
       }
     });
 
@@ -135,6 +140,7 @@ var Game = {
   }
 };
 
+Game.bg.src = '../../public/bg.png';
 Game.initTiles();
 Game.newCamera(0, 0);
 

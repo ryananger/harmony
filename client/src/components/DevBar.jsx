@@ -1,9 +1,6 @@
 import React from 'react';
 
 import Entity from './Game/Entity.js';
-import Bulbasaur from './Game/Bulbasaur.js';
-import Charmander from './Game/Charmander.js';
-import Player from './Game/Player.js';
 
 var Dev = function({Game}) {
 

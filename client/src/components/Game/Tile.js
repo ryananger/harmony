@@ -44,6 +44,7 @@ var Tile = function(src, x, y, sq, frame) {
       var frame = tile.frame;
       var sq = tile.sq;
 
+      ctx.fillStyle = '#45782e50';
       ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x - (sq/2), tile.y - (sq/2), sq, sq);
 
       if (Game.showBoxes) {

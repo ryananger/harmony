@@ -9,6 +9,9 @@ var App = function() {
   const [updates, updateReact] = useState(0);
   const updateInterval = 100;
 
+  const height = Math.floor(window.innerHeight);
+  const width = Math.floor(window.innerWidth);
+
   const reactLoop = function() {
     setTimeout(function() {
       updateReact(updates + 1);
@@ -22,7 +25,7 @@ var App = function() {
     <div className='play'>
       <Dev Game={Game} />
       <UI  Game={Game} />
-      <canvas id='canvas' className='canvas float' width='1280' height='720' />
+      <canvas id='canvas' style={{width: width, height: height}} className='canvas float' width={width} height={height} />
     </div>
   )
 }
