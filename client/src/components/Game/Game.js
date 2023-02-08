@@ -1,5 +1,6 @@
 import Tile from './Tile.js';
 import Cliff from './Cliff.js';
+import Tree from './Tree.js';
 import Camera from './Camera.js';
 
 import input from './input.js';
@@ -40,6 +41,12 @@ var Game = {
 
         Game.entities.unshift(cliff);
       }
+
+      var tree = Tree(i*64 + Math.floor(Math.random() * 18), 100 + Math.floor(Math.random() * 36), 64);
+      var tree2 = Tree(i*64 + Math.floor(Math.random() * 48), 136 + Math.floor(Math.random() * 36), 64);
+
+      Game.entities.unshift(tree);
+      Game.entities.unshift(tree2);
 
       for (var j = -12; j <= 12; j++) {
        Game.addTile(i, j);

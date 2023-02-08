@@ -1,7 +1,16 @@
 var idCount = 0;
 
+var colors = [
+  '#91df35',
+  '#c6df35',
+  '#92df23',
+  '#dfd823'
+];
+
 var Tile = function(Game, x, y) {
   const sq = Game.tilesize;
+
+  Game.tileColor = colors[0];
 
   const tile = {
     id: idCount++,
@@ -20,9 +29,9 @@ var Tile = function(Game, x, y) {
     sq: sq,
     width: sq,
     height: sq,
-    frame: function() {
-      return Math.random() < 0.1 ? Math.floor(Math.random() * 5) : 0;
-    }(),
+    frameX: Math.random() < 0.1 ? Math.floor(Math.random() * 10) : 0,
+    frameY: 0,
+    color: Game.tileColor,
     image: function() {
       var image = {
         element: new Image(),
@@ -45,10 +54,18 @@ var Tile = function(Game, x, y) {
       return dist;
     },
     draw: function(Game, ctx, cam) {
-      var frame = tile.frame;
+      var frameX = tile.frameX;
+      var frameY = tile.frameY;
       var sq = tile.sq;
 
-      ctx.drawImage(tile.image.element, frame * sq, 0, sq, sq, tile.x, tile.y, sq, sq);
+      ctx.globalCompositeOperation = 'color';
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = Game.tileColor;
+      ctx.fillRect(tile.x, tile.y, 64, 64);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+
+      ctx.drawImage(tile.image.element, frameX * sq, frameY * sq, sq, sq, tile.x, tile.y, sq, sq);
 
       if (Game.showBoxes) {
         var box = tile.box;

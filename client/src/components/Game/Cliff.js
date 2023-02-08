@@ -41,7 +41,7 @@ var Cliff = function(x, y, sq) {
       var width = cliff.width;
       var height = cliff.height;
 
-      ctx.drawImage(cliff.image.element, frame * width, 0, width, height, cliff.x, cliff.y, width, height);
+      ctx.drawImage(cliff.image.element, frame * width, 0, width, height, cliff.x - width/2, cliff.y - height/2, width, height);
 
       if (Game.showBoxes) {
         var box = cliff.box;
