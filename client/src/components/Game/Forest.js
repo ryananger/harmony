@@ -1,3 +1,5 @@
+import helpers from '../helpers.js';
+
 var idCount = 0;
 
 var Forest = function(x, y, sq) {
@@ -14,7 +16,7 @@ var Forest = function(x, y, sq) {
     sq: sq,
     width: sq,
     height: sq,
-    frame: Math.floor(Math.random() * 3),
+    frame: helpers.rand(3),
     image: function() {
       var image = {
         element: new Image()
@@ -23,18 +25,6 @@ var Forest = function(x, y, sq) {
       image.element.src = '../../public/forest.png';
       return image;
     }(),
-    nearCamera: function(cam) {
-      return (
-        forest.getDistance(cam) < 800
-      );
-    },
-    getDistance: function(entry) {
-      var distX = Math.abs((forest.x + (forest.width/2)) - (entry.x + (entry.width/2)));
-      var distY = Math.abs((forest.y + (forest.height/2)) - (entry.y + (entry.height/2)));
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
-
-      return dist;
-    },
     draw: function(Game, ctx, cam) {
       var frame = forest.frame;
       var width = forest.width;

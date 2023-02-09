@@ -1,3 +1,5 @@
+import helpers from '../helpers.js';
+
 var idCount = 0;
 
 var Tree = function(x, y, sq) {
@@ -14,8 +16,7 @@ var Tree = function(x, y, sq) {
     sq: sq,
     width: sq,
     height: sq,
-    frame: Math.floor(Math.random() * 3),
-    rotate: Math.floor(Math.random() * 360),
+    frame: helpers.rand(3),
     image: function() {
       var image = {
         element: new Image()
@@ -24,18 +25,6 @@ var Tree = function(x, y, sq) {
       image.element.src = '../../public/trees.png';
       return image;
     }(),
-    nearCamera: function(cam) {
-      return (
-        tree.getDistance(cam) < 800
-      );
-    },
-    getDistance: function(entry) {
-      var distX = Math.abs((tree.x + (tree.width/2)) - (entry.x + (entry.width/2)));
-      var distY = Math.abs((tree.y + (tree.height/2)) - (entry.y + (entry.height/2)));
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
-
-      return dist;
-    },
     draw: function(Game, ctx, cam) {
       var frame = tree.frame;
       var width = tree.width;

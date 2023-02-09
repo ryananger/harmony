@@ -5,6 +5,7 @@ import Forest from './Forest.js';
 import Camera from './Camera.js';
 
 import input from './input.js';
+import helpers from '../helpers.js';
 
 var tick = 0;
 var renderTimeout;
@@ -17,6 +18,7 @@ var Game = {
   player: null,
   visibleUi: false,
 
+  viewDist: 1400,
   cameras:  [],
   entities: [],
   uis:      [],
@@ -47,13 +49,11 @@ var Game = {
         Game.entities.unshift(cliff);
       }
 
-      var tree = Tree(i*64 + Math.floor(Math.random() * 18), 100 + Math.floor(Math.random() * 36), 64);
-      var tree2 = Tree(i*64 + Math.floor(Math.random() * 48), 136 + Math.floor(Math.random() * 36), 64);
+      var tree = Tree(i*64 + helpers.rand(18), 100 + helpers.rand(36), 64);
+      var tree2 = Tree(i*64 + helpers.rand(48), 136 + helpers.rand(36), 64);
 
       Game.entities.unshift(tree);
       Game.entities.unshift(tree2);
-
-
 
       for (var j = -12; j <= 12; j++) {
        Game.addTile(i, j);
@@ -119,9 +119,9 @@ var Game = {
     ctx.translate(-Game.offX, -Game.offY);
 
     all.map(function(entry) {
-      entry.draw(Game, ctx, camera, tick);
 
-      if (entry.nearCamera(camera)) {
+      if (helpers.nearCamera(entry, camera, Game.viewDist)) {
+        entry.draw(Game, ctx, camera, tick);
         entry.update(Game);
       }
     });

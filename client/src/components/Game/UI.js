@@ -44,18 +44,12 @@ var UI = function(x, y, actions) {
       ui.images.push(image);
       return image;
     },
-    nearCamera: function(cam) {
-      return (
-        ui.x > cam.x - 3000 &&
-        ui.x < cam.x + 3000 &&
-        ui.y > cam.y - 3000 &&
-        ui.y < cam.y + 3000
-      );
-    },
     follow: function(distance) {
-      var distX = Math.abs(ui.x - ui.following.x);
-      var distY = Math.abs(ui.y - ui.following.y);
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
+      var d = helpers.getDistance(ui, ui.following, true);
+
+      var distX = d.distX;
+      var distY = d.distY;
+      var dist  = d.dist;
 
       if (dist > distance) {
         var stepX = distX/ui.drag;

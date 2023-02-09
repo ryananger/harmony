@@ -1,3 +1,5 @@
+import helpers from '../helpers.js';
+
 var idCount = 0;
 
 var colors = [
@@ -29,7 +31,7 @@ var Tile = function(Game, x, y) {
     sq: sq,
     width: sq,
     height: sq,
-    frameX: Math.random() < 0.1 ? Math.floor(Math.random() * 10) : 0,
+    frameX: Math.random() < 0.1 ? helpers.rand(10) : 0,
     frameY: 0,
     color: Game.tileColor,
     image: function() {
@@ -41,18 +43,6 @@ var Tile = function(Game, x, y) {
       image.element.src = '../../public/tiles.png';
       return image;
     }(),
-    nearCamera: function(cam) {
-      return (
-        tile.getDistance(cam) < 800
-      );
-    },
-    getDistance: function(entry) {
-      var distX = Math.abs((tile.x + (tile.width/2)) - (entry.x + (entry.width/2)));
-      var distY = Math.abs((tile.y + (tile.height/2)) - (entry.y + (entry.height/2)));
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
-
-      return dist;
-    },
     draw: function(Game, ctx, cam) {
       var frameX = tile.frameX;
       var frameY = tile.frameY;

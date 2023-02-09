@@ -1,6 +1,8 @@
+import helpers from '../helpers.js';
+
 var idCount = 0;
 
-var Entity = function(x, y, actions) {
+var Entity = function(x, y) {
   const entity = {
     id: idCount++,
     isEntity: true,
@@ -11,8 +13,8 @@ var Entity = function(x, y, actions) {
 
     x: x,
     y: y,
-    cx: Math.floor(x/72),
-    cy: Math.floor(x/72),
+    cx: Math.floor(x/64),
+    cy: Math.floor(x/64),
     box: {x: 0, y: 0, w: 0, h: 0},
     width: 0,
     height: 0,
@@ -34,7 +36,6 @@ var Entity = function(x, y, actions) {
 
     images: [],
     currentImage: 0,
-    actions: actions || {},
     ignore: [],
     newImage: function(src, isAnimated, width, height, x, y) {
       var image = {
@@ -59,18 +60,6 @@ var Entity = function(x, y, actions) {
       entity.images.push(image);
       return image;
     },
-    nearCamera: function(cam) {
-      return (
-        entity.getDistance(cam) < 800
-      );
-    },
-    getDistance: function(entry) {
-      var distX = Math.abs((entity.x + (entity.width/2)) - (entry.x + (entry.width/2)));
-      var distY = Math.abs((entity.y + (entity.height/2)) - (entry.y + (entry.height/2)));
-      var dist = Math.sqrt((distX ** 2) + (distY ** 2));
-
-      return dist;
-    },
     collisionCheck: function(x, y, entities, tiles) {
       if (!entity.collides || !entity.nearCamera) {
         return;
@@ -82,7 +71,7 @@ var Entity = function(x, y, actions) {
           return;
         }
 
-        var dist = entity.getDistance(entry);
+        var dist = helpers.getDistance(entity, entry);
 
         if (dist > entity.width*2) {
           return;
@@ -131,9 +120,11 @@ var Entity = function(x, y, actions) {
     },
     follow: function(distance) {
       if (entity.following) {
-        var distX = Math.abs(entity.x - entity.following.x);
-        var distY = Math.abs(entity.y - entity.following.y);
-        var dist = Math.sqrt((distX ** 2) + (distY ** 2));
+        var d = helpers.getDistance(entity, entity.following, true);
+
+        var distX = d.distX;
+        var distY = d.distY;
+        var dist  = d.dist;
 
         if (dist > distance) {
           var stepX = distX/entity.drag;
