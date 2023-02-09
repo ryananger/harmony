@@ -1,6 +1,7 @@
 import Tile from './Tile.js';
 import Cliff from './Cliff.js';
 import Tree from './Tree.js';
+import Forest from './Forest.js';
 import Camera from './Camera.js';
 
 import input from './input.js';
@@ -33,6 +34,10 @@ var Game = {
     var grid  = Game.grid;
     var tiles = Game.tiles;
 
+    var forest = Forest(0, 320, 128);
+
+    Game.entities.push(forest);
+
     for (var i = -20; i <= 20; i++) {
       grid[i] = {};
 
@@ -47,6 +52,8 @@ var Game = {
 
       Game.entities.unshift(tree);
       Game.entities.unshift(tree2);
+
+
 
       for (var j = -12; j <= 12; j++) {
        Game.addTile(i, j);
@@ -97,8 +104,8 @@ var Game = {
     }
 
     var camera = Game.camera;
-    var offX = camera.x - (ctx.canvas.width/2);
-    var offY = camera.y - (ctx.canvas.height/2);
+    Game.offX = camera.x - (ctx.canvas.width/2);
+    Game.offY = camera.y - (ctx.canvas.height/2);
 
     var all = [
       ...Game.tiles,
@@ -109,7 +116,7 @@ var Game = {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.drawImage(Game.bg, -1600 + (ctx.canvas.width/2), -900 + (ctx.canvas.height/2));
     ctx.save();
-    ctx.translate(-offX, -offY);
+    ctx.translate(-Game.offX, -Game.offY);
 
     all.map(function(entry) {
       entry.draw(Game, ctx, camera, tick);

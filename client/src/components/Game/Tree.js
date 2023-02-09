@@ -15,6 +15,7 @@ var Tree = function(x, y, sq) {
     width: sq,
     height: sq,
     frame: Math.floor(Math.random() * 3),
+    rotate: Math.floor(Math.random() * 360),
     image: function() {
       var image = {
         element: new Image()
@@ -39,8 +40,14 @@ var Tree = function(x, y, sq) {
       var frame = tree.frame;
       var width = tree.width;
       var height = tree.height;
+      var degrees = tree.rotate;
 
+      ctx.save();
+      // ctx.translate(tree.x, tree.y);
+      // ctx.rotate(degrees * Math.PI/180);
+      // ctx.translate(-(tree.x), -(tree.y));
       ctx.drawImage(tree.image.element, frame * width, 0, width, height, tree.x - width/2, tree.y - height/2, width, height);
+      ctx.restore();
 
       if (Game.showBoxes) {
         var box = tree.box;
