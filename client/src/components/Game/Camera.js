@@ -13,9 +13,11 @@ var Camera = function(x, y) {
 
   camera.follow = function(distance) {
     if (camera.following) {
-      var distX = Math.abs(camera.x - camera.following.x);
-      var distY = Math.abs(camera.y - camera.following.y);
-      var dist  = helpers.getDistance(camera, camera.following);
+      var d = helpers.getDistance(camera, camera.following, true);
+
+      var distX = d.distX;
+      var distY = d.distY;
+      var dist  = d.dist;
 
       if (dist > distance) {
         var stepX = Math.ceil(distX/camera.drag);
